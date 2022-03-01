@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { hasWindow } from './helpers/window';
-import { scrollTop } from './helpers/positions';
+import { scrollTop } from '@speaker-ender/js-position-helpers';
 import { throttle } from 'throttle-debounce';
 import { useEventCallback } from './helpers/hooks';
 

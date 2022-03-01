@@ -5,6 +5,7 @@
     "version": "0.1.0",
     "author": "3nder",
     "dependencies": {
+        "@speaker-ender/js-position-helpers": "0.1.4",
         "custom-event-polyfill": "^1.0.7",
         "domhandler": "^4.3.0",
         "dotenv": "^16.0.0",

@@ -1,19 +1,29 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
+export type IObserverOptions = {
+    rootMargin?: string;
+    root?: Element | Document | null;
+}
+
 export type IObserverState = Partial<ReturnType<typeof useObserverState>>;
 
-export const ObserverContext = createContext<IObserverState | null>(
+type IObserverContext = IObserverState & IObserverOptions;
+
+export const ObserverContext = createContext<IObserverContext | null>(
     null
 );
 
-export const useObserverState = () => {
+export interface IObserverContextProvider extends IObserverOptions { }
+
+export const useObserverState = (props: IObserverOptions) => {
     const [inViewObserver, setInViewObserver] = useState<IntersectionObserver>(null!);
 
     useEffect(() => {
         if (!inViewObserver) {
-            const observerOptions = {
-                rootMargin: '-90px 0px -10% 0px',
-                thresholds: [0]
+            const observerOptions: IntersectionObserverInit = {
+                root: props.root || null,
+                rootMargin: props.rootMargin || '-90px 0px -10% 0px',
+                threshold: [0]
             };
 
             setInViewObserver(new IntersectionObserver(updateElementInView, observerOptions));
@@ -25,11 +35,9 @@ export const useObserverState = () => {
     }, [setInViewObserver]);
 
     const updateElementInView = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-
         entries.forEach((entry: IntersectionObserverEntry) => {
-            const inViewNode = entry.target;
-
             if (entry.isIntersecting) {
+                const inViewNode = entry.target;
                 inViewNode.classList.add('in-view--visible');
                 observer.unobserve(inViewNode);
             }
@@ -72,12 +80,12 @@ export const useObserverContext = () => {
     return observerContext;
 };
 
-export const ObserverContextProvider: React.FC = ({ children }) => {
-    const observerState = useObserverState();
+export const ObserverContextProvider: React.FC<IObserverContextProvider> = (props) => {
+    const observerState = useObserverState(props);
 
     return (
         <ObserverContext.Provider value={observerState}>
-            {children}
+            {props.children}
         </ObserverContext.Provider>
     );
 };
