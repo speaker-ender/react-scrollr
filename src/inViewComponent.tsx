@@ -7,16 +7,16 @@ export interface IInViewComponent {
 }
 
 export const InViewComponent: React.FC<IInViewComponent> = props => {
-    const { inViewObserver, registerElementInView, unregisterElementInView } = useObserverContext();
+    const { registerElementInView, unregisterElementInView, inViewObserver } = useObserverContext();
     const inViewElementRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
-        inViewElementRef.current && registerElementInView && registerElementInView(inViewElementRef.current as HTMLElement);
+        !!inViewObserver && inViewElementRef.current && registerElementInView && registerElementInView(inViewElementRef.current as HTMLElement);
 
         return () => {
             inViewElementRef.current && unregisterElementInView && unregisterElementInView(inViewElementRef.current as HTMLElement);
         };
-    }, [inViewObserver, inViewElementRef]);
+    }, [inViewElementRef, inViewObserver]);
 
     return (
         <StyledInView transitionStyle={props.transitionStyle} ref={inViewElementRef}>

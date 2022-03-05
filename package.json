@@ -4,25 +4,24 @@
     "description": "React tools for scroll animations",
     "version": "0.1.0",
     "author": "3nder",
-    "dependencies": {
-        "@speaker-ender/js-position-helpers": "0.1.4",
-        "custom-event-polyfill": "^1.0.7",
-        "domhandler": "^4.3.0",
-        "dotenv": "^16.0.0",
-        "prop-types": "^15.8.1",
-        "react-transition-group": "^4.4.2",
-        "rollup": "^2.68.0",
-        "throttle-debounce": "^3.0.1",
-        "styled-components": "^5.3.3",
-        "ts-node": "^10.5.0"
-    },
+    "dependencies": {},
     "devDependencies": {
+        "@speaker-ender/js-measure": "0.2.0",
+        "@speaker-ender/react-position-tools": "0.1.1",
         "@types/node": "^17.0.21",
         "@types/react": "^17.0.39",
         "@types/react-dom": "^17.0.11",
         "@types/react-transition-group": "^4.4.4",
         "@types/styled-components": "^5.1.23",
         "@types/throttle-debounce": "^2.1.0",
+        "custom-event-polyfill": "^1.0.7",
+        "domhandler": "^4.3.0",
+        "dotenv": "^16.0.0",
+        "prop-types": "^15.8.1",
+        "react-transition-group": "^4.4.2",
+        "throttle-debounce": "^3.0.1",
+        "styled-components": "^5.3.3",
+        "ts-node": "^10.5.0",
         "cross-env": "^7.0.3",
         "prettier": "^2.5.1",
         "react": "^17.0.2",
@@ -34,15 +33,21 @@
         "react-dom": "^17.0.2"
     },
     "keywords": [
-        "gatsby"
+        "react",
+        "scroller"
     ],
     "license": "MIT",
     "scripts": {
-        "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+        "build:package": "npm run build:esbuild && npm run build:types",
+        "build:esbuild": "node build.js",
+        "build:types": "tsc --project tsconfig.build.json",
         "clean NPM": "npm ci",
         "install NPM": "npm install",
-        "lint:scss": "stylelint 'src/**/*.scss' --syntax scss",
-        "pretty:scss": "prettier --write \"./src/**/*.scss\""
+        "dev": "npm run dev -w example",
+        "build": "npm run build -w example",
+        "start": "npm run start -w example",
+        "postpublish": "npm run publish-npm",
+        "publish-npm": "npm publish --access public --ignore-scripts --@speaker-ender:registry='https://registry.npmjs.org'"
     },
     "repository": {
         "type": "git",
@@ -52,6 +57,6 @@
         "url": "https://github.com/speaker-ender/react-scrollr/issues"
     },
     "workspaces": [
-        "example/react-scrollr--example"
+        "example"
     ]
 }

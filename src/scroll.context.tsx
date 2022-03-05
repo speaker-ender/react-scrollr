@@ -1,8 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { hasWindow } from './helpers/window';
-import { scrollTop } from '@speaker-ender/js-position-helpers';
+import { scrollTopDistance, hasWindow } from '@speaker-ender/js-measure';
 import { throttle } from 'throttle-debounce';
-import { useEventCallback } from './helpers/hooks';
 
 const SCROLL_INTERVAL = 50;
 
@@ -22,7 +20,7 @@ const selectScrollState = (
 ): ScrollState | undefined =>
     hasWindow
         ? {
-            currentPosition: scrollTop(),
+            currentPosition: scrollTopDistance(),
             prevPosition,
         }
         : undefined;
@@ -31,9 +29,7 @@ export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
 export const useScrollState = () => {
     const [scrollState, setScrollState] = useState(selectScrollState);
-    const [scrollCallbacks, setScrollCallbacks] = useState<
-        ScrollCallback[]
-    >([]);
+    const [scrollCallbacks, setScrollCallbacks] = useState<ScrollCallback[]>([]);
 
     const registerScrollCallback = useCallback(
         (scrollCallback: ScrollCallback) => {
@@ -51,33 +47,32 @@ export const useScrollState = () => {
         [scrollCallbacks]
     );
 
-    if (hasWindow) {
-        const throttledSetScrollState = throttle(SCROLL_INTERVAL, setScrollState);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const handleScrollEvent = useEventCallback(() => {
-            const newScrollState = selectScrollState(
-                scrollState && scrollState.currentPosition
-            );
+    const throttledSetScrollState = throttle(SCROLL_INTERVAL, setScrollState, true);
 
-            scrollCallbacks.map(scrollCallback =>
-                scrollCallback(
-                    newScrollState && newScrollState.currentPosition,
-                    newScrollState &&
-                    newScrollState.prevPosition
-                )
-            );
+    const handleScrollEvent = useCallback(() => {
+        const newScrollState = selectScrollState(
+            scrollState && scrollState.currentPosition
+        );
 
-            throttledSetScrollState(newScrollState);
-        }, [scrollState && scrollState.currentPosition, scrollCallbacks]);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => {
-            window.addEventListener('scroll', handleScrollEvent);
+        scrollCallbacks.map(scrollCallback =>
+            scrollCallback(
+                !!newScrollState ? newScrollState.currentPosition : 0,
+                !!newScrollState ? newScrollState.prevPosition : 0
+            )
+        );
 
-            return () => {
-                window.removeEventListener('scroll', handleScrollEvent);
-            };
-        }, [handleScrollEvent]);
-    }
+        hasWindow && throttledSetScrollState(newScrollState);
+    }, [scrollState && scrollState.currentPosition, scrollCallbacks]);
+
+    const scrollListener = () => requestAnimationFrame(() => handleScrollEvent());
+
+    useEffect(() => {
+        window.addEventListener('scroll', scrollListener);
+
+        return () => {
+            window.removeEventListener('scroll', scrollListener);
+        };
+    }, [handleScrollEvent]);
 
     return {
         scrollState: scrollState,
