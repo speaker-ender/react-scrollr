@@ -40,7 +40,7 @@ const Layout: React.FC = ({ children }) => {
                         <Alert />
                         <InvertTheme />
                         <Message />
-                        <DebugPanel>
+                        <DebugPanel defaultOpen={true}>
                             <ScrollInfo />
                         </DebugPanel>
                     </div>

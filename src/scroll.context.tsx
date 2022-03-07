@@ -1,14 +1,12 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { scrollTopDistance, hasWindow } from '@speaker-ender/js-measure';
 import { throttle } from 'throttle-debounce';
 
-const SCROLL_INTERVAL = 50;
+const SCROLL_INTERVAL = 10;
 
-export type IScrollState = Partial<ReturnType<typeof useScrollState>>;
+export type IScrollState = ReturnType<typeof useScrollState>;
 
-export const ScrollContext = createContext<IScrollState | null>(
-    null
-);
+export const ScrollContext = createContext<IScrollState>(null!);
 
 export interface ScrollState {
     currentPosition: number,
@@ -18,43 +16,43 @@ export interface ScrollState {
 const selectScrollState = (
     prevPosition?: number
 ): ScrollState | undefined =>
-    hasWindow
-        ? {
-            currentPosition: scrollTopDistance(),
-            prevPosition,
-        }
-        : undefined;
+    hasWindow ? {
+        currentPosition: scrollTopDistance(),
+        prevPosition,
+    } : undefined;
 
 export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
 export const useScrollState = () => {
-    const [scrollState, setScrollState] = useState(selectScrollState);
-    const [scrollCallbacks, setScrollCallbacks] = useState<ScrollCallback[]>([]);
+    const [isClientSide, setIsClientSide] = useState(false);
+    const scrollState = useRef<ScrollState | undefined>(selectScrollState());
+    const scrollCallbacks = useRef<ScrollCallback[]>([]);
+    const scrollingTimer = useRef<ReturnType<typeof setTimeout>>(null!);
+
 
     const registerScrollCallback = useCallback(
         (scrollCallback: ScrollCallback) => {
-            setScrollCallbacks([...scrollCallbacks, scrollCallback]);
+            scrollCallbacks.current = ([...scrollCallbacks.current, scrollCallback]);
         },
-        [scrollCallbacks]
+        [scrollCallbacks.current]
     );
 
     const unregisterScrollCallback = useCallback(
         (scrollCallback: ScrollCallback) => {
-            setScrollCallbacks(
-                scrollCallbacks.filter(callback => callback !== scrollCallback)
-            );
+            scrollCallbacks.current = scrollCallbacks.current.filter(callback => callback !== scrollCallback);
         },
-        [scrollCallbacks]
+        [scrollCallbacks.current]
     );
 
-    const throttledSetScrollState = throttle(SCROLL_INTERVAL, setScrollState, true);
+    const throttledSetScrollState = throttle(SCROLL_INTERVAL, (newScrollState) => scrollState.current = newScrollState);
+
 
     const handleScrollEvent = useCallback(() => {
         const newScrollState = selectScrollState(
-            scrollState && scrollState.currentPosition
+            scrollState.current && scrollState.current.currentPosition
         );
 
-        scrollCallbacks.map(scrollCallback =>
+        scrollCallbacks.current.map(scrollCallback =>
             scrollCallback(
                 !!newScrollState ? newScrollState.currentPosition : 0,
                 !!newScrollState ? newScrollState.prevPosition : 0
@@ -62,17 +60,37 @@ export const useScrollState = () => {
         );
 
         hasWindow && throttledSetScrollState(newScrollState);
-    }, [scrollState && scrollState.currentPosition, scrollCallbacks]);
+    }, [!!scrollState.current && scrollState.current.currentPosition, scrollCallbacks]);
 
-    const scrollListener = () => requestAnimationFrame(() => handleScrollEvent());
+    const listenToScroll = useCallback(() => {
+        clearTimeout(scrollingTimer.current);
+        scrollingTimer.current = setTimeout(
+            () =>
+                requestAnimationFrame(() => {
+                    handleScrollEvent();
+                }),
+            SCROLL_INTERVAL
+        );
+    }, [scrollingTimer, handleScrollEvent, scrollCallbacks]);
 
     useEffect(() => {
-        window.addEventListener('scroll', scrollListener);
+        const updateScrollActive = () => {
+            listenToScroll();
+        }
+
+        isClientSide && window.addEventListener('scroll', updateScrollActive);
 
         return () => {
-            window.removeEventListener('scroll', scrollListener);
+            window.removeEventListener('scroll', updateScrollActive);
         };
-    }, [handleScrollEvent]);
+    }, [isClientSide]);
+
+    useEffect(() => {
+        setIsClientSide(true);
+
+        return () => {
+        };
+    }, []);
 
     return {
         scrollState: scrollState,

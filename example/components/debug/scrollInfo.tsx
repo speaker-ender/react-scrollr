@@ -25,7 +25,7 @@ const ScrollInfo: React.FC<IScrollInfo> = (props) => {
     return (
         <div>
             <Header4>Scroll Info</Header4>
-            <Paragraph>Scroll Position: {currentScroll}px</Paragraph>
+            <Paragraph>Scroll Position: {currentScroll.toPrecision(10)}px</Paragraph>
         </div>
     )
 }
