@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 export type IObserverOptions = {
     rootMargin?: string;
@@ -13,10 +13,30 @@ export const ObserverContext = createContext<IObserverContext | null>(
     null
 );
 
+export type InViewCallback = {
+    callback: () => void;
+    element: Element;
+};
+
 export interface IObserverContextProvider extends IObserverOptions { }
 
 export const useObserverState = (props: IObserverOptions) => {
     const [inViewObserver, setInViewObserver] = useState<IntersectionObserver>(null!);
+    const inViewCallbacks = useRef<InViewCallback[]>([]);
+
+    const registerInViewCallback = useCallback(
+        (inViewCallback: InViewCallback) => {
+            inViewCallbacks.current = ([...inViewCallbacks.current, inViewCallback]);
+        },
+        [inViewCallbacks.current]
+    );
+
+    const unregisterInViewCallback = useCallback(
+        (inViewCallback: InViewCallback) => {
+            inViewCallbacks.current = inViewCallbacks.current.filter(callback => callback !== inViewCallback);
+        },
+        [inViewCallbacks.current]
+    );
 
     useEffect(() => {
         if (!inViewObserver) {
@@ -38,20 +58,29 @@ export const useObserverState = (props: IObserverOptions) => {
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.isIntersecting) {
                 const inViewNode = entry.target;
-                inViewNode.classList.add('in-view--visible');
+                // inViewNode.classList.add('in-view--visible');
+                const callbackObject = inViewCallbacks.current.find((object) => object.element == inViewNode);
+
+                if (!!callbackObject) {
+                    callbackObject.callback();
+                    unregisterInViewCallback(callbackObject);
+                }
+
                 observer.unobserve(inViewNode);
             }
         });
     };
 
     const registerElementInView = useCallback(
-        (inViewElementRef: HTMLElement) => {
+        (inViewElementRef: HTMLElement, callback?: () => void) => {
             if (!!inViewObserver && !!inViewElementRef) {
                 inViewObserver.observe(inViewElementRef);
                 inViewElementRef.classList.add('in-view');
+
+                callback && registerInViewCallback({ callback: callback, element: inViewElementRef });
             }
         },
-        [inViewObserver]
+        [inViewObserver, registerInViewCallback]
     );
 
     const unregisterElementInView = useCallback(

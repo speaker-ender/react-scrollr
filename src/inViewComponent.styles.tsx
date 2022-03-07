@@ -3,6 +3,7 @@ export type TransitionStyles = 'fade-in' | 'fade-up' | 'fade-side' | 'none';
 
 export interface IStyledInViewProps {
     transitionStyle?: TransitionStyles;
+    inView?: boolean;
 }
 
 export const opacity = {
@@ -17,50 +18,24 @@ export const opacity = {
 
 export const animation = `500ms cubic-bezier(0.33, 1, 0.68, 1)`;
 
-export const fadeInView = css`
-    opacity: ${opacity.full};
-
-    &.in-view {
-        opacity: ${opacity.full};
-
-        &--visible {
-            transition: opacity ${animation};
-            opacity: ${opacity.none};
-        }
-    }
+export const fadeInView = css<IStyledInViewProps>`
+    opacity: ${p => p.inView ? opacity.none : opacity.full};
+    transition: opacity ${animation};
 `;
 
-export const fadeUpAndInView = css`
-    opacity: ${opacity.full};
-    transform: translate3d(0, 25px, 0);
-
-    &.in-view {
-        opacity: ${opacity.full};
-        transform: translate3d(0, 25px, 0);
-
-        &--visible {
-            transition: opacity ${animation}, transform ${animation};
-            opacity: ${opacity.none};
-            transform: translate3d(0, 0, 0);
-        }
-    }
+export const fadeUpAndInView = css<IStyledInViewProps>`
+    opacity: ${p => p.inView ? opacity.none : opacity.full};
+    transform: ${p => p.inView ? 'translate3d(0, 0, 0)' : 'translate3d(0, 25px, 0)'};
+    transition: opacity ${animation}, transform ${animation};
 `;
 
-export const fadeFromSideAndInView = css`
+export const fadeFromSideAndInView = css<IStyledInViewProps>`
     opacity: ${opacity.full};
-
-    &.in-view {
-        max-width: 100vw;
-        opacity: ${opacity.full};
-        transform: translate3d(-25px, 0, 0);
-        overflow-x: hidden;
-
-        &--visible {
-            transition: opacity ${animation}, transform ${animation};
-            opacity: ${opacity.none};
-            transform: translate3d(0, 0, 0);
-        }
-    }
+    max-width: 100vw;
+    opacity: ${p => p.inView ? opacity.none : opacity.full};
+    transform: ${p => p.inView ? 'translate3d(0, 0, 0)' : 'translate3d(-25px, 0, 0)'};
+    overflow-x: hidden;
+    transition: opacity ${animation}, transform ${animation};
 `;
 
 const handleTransitionType = (style: string | undefined) => {
