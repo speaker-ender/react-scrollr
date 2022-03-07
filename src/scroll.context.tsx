@@ -1,6 +1,7 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef } from 'react';
 import { scrollTopDistance, hasWindow } from '@speaker-ender/js-measure';
 import { throttle } from 'throttle-debounce';
+import { useClientHook } from '@speaker-ender/react-ssr-tools';
 
 const SCROLL_INTERVAL = 10;
 
@@ -24,7 +25,7 @@ const selectScrollState = (
 export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
 export const useScrollState = () => {
-    const [isClientSide, setIsClientSide] = useState(false);
+    const isClientSide = useClientHook();
     const scrollState = useRef<ScrollState | undefined>(selectScrollState());
     const scrollCallbacks = useRef<ScrollCallback[]>([]);
     const scrollingTimer = useRef<ReturnType<typeof setTimeout>>(null!);
@@ -84,13 +85,6 @@ export const useScrollState = () => {
             window.removeEventListener('scroll', updateScrollActive);
         };
     }, [isClientSide]);
-
-    useEffect(() => {
-        setIsClientSide(true);
-
-        return () => {
-        };
-    }, []);
 
     return {
         scrollState: scrollState,
