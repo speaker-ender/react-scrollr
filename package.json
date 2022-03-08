@@ -24,6 +24,7 @@
         "domhandler": "^4.3.0",
         "dotenv": "^16.0.0",
         "esbuild": "^0.14.25",
+        "esbuild-node-externals": "^1.4.1",
         "prop-types": "^15.8.1",
         "react-transition-group": "^4.4.2",
         "throttle-debounce": "^3.0.1",
@@ -46,7 +47,7 @@
     "license": "MIT",
     "scripts": {
         "build:package": "npm run build:esbuild && npm run build:types",
-        "build:esbuild": "node build.js",
+        "build:esbuild": "node build.mjs",
         "build:types": "tsc --project tsconfig.build.json",
         "clean NPM": "npm ci",
         "install NPM": "npm install",

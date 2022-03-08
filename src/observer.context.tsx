@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 export type IObserverOptions = {
     rootMargin?: string;
     root?: Element | Document | null;
+    threshold?: number[];
 }
 
 export type IObserverState = Partial<ReturnType<typeof useObserverState>>;
@@ -13,8 +14,9 @@ export const ObserverContext = createContext<IObserverContext | null>(
     null
 );
 
-export type InViewCallback = {
-    callback: () => void;
+export type IInViewElement = {
+    callback: (isIntersecting: boolean, threshold: number) => void;
+    untrackOnCallback?: boolean;
     element: Element;
 };
 
@@ -22,28 +24,14 @@ export interface IObserverContextProvider extends IObserverOptions { }
 
 export const useObserverState = (props: IObserverOptions) => {
     const [inViewObserver, setInViewObserver] = useState<IntersectionObserver>(null!);
-    const inViewCallbacks = useRef<InViewCallback[]>([]);
-
-    const registerInViewCallback = useCallback(
-        (inViewCallback: InViewCallback) => {
-            inViewCallbacks.current = ([...inViewCallbacks.current, inViewCallback]);
-        },
-        [inViewCallbacks.current]
-    );
-
-    const unregisterInViewCallback = useCallback(
-        (inViewCallback: InViewCallback) => {
-            inViewCallbacks.current = inViewCallbacks.current.filter(callback => callback !== inViewCallback);
-        },
-        [inViewCallbacks.current]
-    );
+    const inViewElements = useRef<IInViewElement[]>([]);
 
     useEffect(() => {
         if (!inViewObserver) {
             const observerOptions: IntersectionObserverInit = {
                 root: props.root || null,
                 rootMargin: props.rootMargin || '-90px 0px -10% 0px',
-                threshold: [0]
+                threshold: props.threshold || [0],
             };
 
             setInViewObserver(new IntersectionObserver(updateElementInView, observerOptions));
@@ -55,45 +43,44 @@ export const useObserverState = (props: IObserverOptions) => {
     }, [setInViewObserver]);
 
     const updateElementInView = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+
         entries.forEach((entry: IntersectionObserverEntry) => {
-            if (entry.isIntersecting) {
-                const inViewNode = entry.target;
-                // inViewNode.classList.add('in-view--visible');
-                const callbackObject = inViewCallbacks.current.find((object) => object.element == inViewNode);
+            const inViewNode = entry.target;
+            const callbackObject = inViewElements.current.find((object) => object.element == inViewNode);
 
-                if (!!callbackObject) {
-                    callbackObject.callback();
-                    unregisterInViewCallback(callbackObject);
+            if (!!callbackObject) {
+                callbackObject.callback(entry.isIntersecting, entry.intersectionRatio);
+
+                if (entry.isIntersecting && callbackObject.untrackOnCallback) {
+                    callbackObject.untrackOnCallback && unregisterInViewElement(callbackObject);
+                    observer.unobserve(inViewNode);
                 }
-
-                observer.unobserve(inViewNode);
             }
         });
     };
 
-    const registerElementInView = useCallback(
-        (inViewElementRef: HTMLElement, callback?: () => void) => {
-            if (!!inViewObserver && !!inViewElementRef) {
-                inViewObserver.observe(inViewElementRef);
-                inViewElementRef.classList.add('in-view');
-
-                callback && registerInViewCallback({ callback: callback, element: inViewElementRef });
+    const registerInViewElement = useCallback(
+        (inViewElement: IInViewElement) => {
+            if (!!inViewObserver && !!inViewElement.element) {
+                inViewObserver.observe(inViewElement.element);
+                inViewElements.current = ([...inViewElements.current, inViewElement]);
             }
         },
-        [inViewObserver, registerInViewCallback]
+        [inViewObserver, inViewElements.current]
     );
 
-    const unregisterElementInView = useCallback(
-        (inViewElementRef: HTMLElement) => {
-            !!inViewObserver && !!inViewElementRef && inViewObserver.unobserve(inViewElementRef);
+    const unregisterInViewElement = useCallback(
+        (inViewElement: IInViewElement) => {
+            !!inViewObserver && !!inViewElement.element && inViewObserver.unobserve(inViewElement.element);
+            inViewElements.current = inViewElements.current.filter(element => element !== inViewElement);
         },
-        [inViewObserver]
+        [inViewObserver, inViewElements.current]
     );
 
     return {
         inViewObserver,
-        registerElementInView,
-        unregisterElementInView,
+        registerInViewElement,
+        unregisterInViewElement,
     };
 }
 

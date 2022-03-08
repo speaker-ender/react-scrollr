@@ -4,22 +4,29 @@ import { useObserverContext } from './observer.context';
 
 export interface IInViewComponent {
     transitionStyle?: TransitionStyles;
+    untrackOnCallback?: boolean;
 }
 
 export const InViewComponent: React.FC<IInViewComponent> = props => {
-    const { registerElementInView, unregisterElementInView, inViewObserver } = useObserverContext();
+    const { registerInViewElement, unregisterInViewElement, inViewObserver } = useObserverContext();
     const [isInView, setIsInView] = React.useState(false);
     const inViewElementRef = React.useRef<HTMLDivElement>(null);
 
-    const inViewCallback = React.useCallback(() => {
-        setIsInView(true);
+    const inViewCallback = React.useCallback((isIntersecting: boolean, threshold: number) => {
+        setIsInView(threshold > 0.2 && isIntersecting);
     }, [setIsInView])
 
     React.useEffect(() => {
-        !!inViewObserver && inViewElementRef.current && registerElementInView && registerElementInView(inViewElementRef.current as HTMLElement, inViewCallback);
+        !!inViewElementRef.current && !!registerInViewElement && registerInViewElement({
+            element: inViewElementRef.current as HTMLElement,
+            callback: inViewCallback,
+        });
 
         return () => {
-            inViewElementRef.current && unregisterElementInView && unregisterElementInView(inViewElementRef.current as HTMLElement);
+            !!inViewElementRef.current && !!unregisterInViewElement && unregisterInViewElement({
+                element: inViewElementRef.current as HTMLElement,
+                callback: inViewCallback
+            });
         };
     }, [inViewElementRef, inViewObserver]);
 
