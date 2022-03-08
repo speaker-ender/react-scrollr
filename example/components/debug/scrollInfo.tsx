@@ -15,7 +15,7 @@ const ScrollInfo: React.FC<IScrollInfo> = (props) => {
     }, [setCurrentScroll])
 
     useEffect(() => {
-        registerScrollCallback && registerScrollCallback(updateCurrentScroll);
+        !!registerScrollCallback && registerScrollCallback(updateCurrentScroll);
 
         return () => {
             unregisterScrollCallback && unregisterScrollCallback(updateCurrentScroll);

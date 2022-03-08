@@ -11,7 +11,7 @@ const ImageComponent: React.FC = (props) => {
     return (
         <InViewComponent>
             <StyledImage>
-                <Image src={enderImage} layout="responsive"></Image>
+                <Image src={enderImage} layout="responsive" alt="ender"></Image>
             </StyledImage>
         </InViewComponent>
     )
