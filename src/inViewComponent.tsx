@@ -20,12 +20,14 @@ export const InViewComponent: React.FC<IInViewComponent> = props => {
         !!inViewElementRef.current && !!registerInViewElement && registerInViewElement({
             element: inViewElementRef.current as HTMLElement,
             callback: inViewCallback,
+            untrackOnCallback: props.untrackOnCallback
         });
 
         return () => {
             !!inViewElementRef.current && !!unregisterInViewElement && unregisterInViewElement({
                 element: inViewElementRef.current as HTMLElement,
-                callback: inViewCallback
+                callback: inViewCallback,
+                untrackOnCallback: props.untrackOnCallback
             });
         };
     }, [inViewElementRef, inViewObserver]);
