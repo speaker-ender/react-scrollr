@@ -21,31 +21,23 @@ export const InViewComponent: React.FC<IInViewComponent> = props => {
         setIsInView(threshold > 0.2 && isIntersecting);
     }, [setIsInView])
 
-    const registerElement = useCallback(() => {
-        !!registerInViewElement && registerInViewElement({
+    useEffect(() => {
+        !!isClient && !!registerInViewElement && registerInViewElement({
             element: inViewElementRef.current as HTMLElement,
             callback: inViewCallback,
             untrackOnCallback: props.untrackOnCallback
         });
-    }, [registerInViewElement, inViewElementRef.current])
-
-    const unRegisterElement = useCallback(() => {
-        !!unregisterInViewElement && unregisterInViewElement({
-            element: inViewElementRef.current || prevElementRef as HTMLElement,
-            callback: inViewCallback,
-            untrackOnCallback: props.untrackOnCallback
-        });
-    }, [unregisterInViewElement, inViewElementRef.current, prevElementRef])
-
-    useEffect(() => {
-        !!isClient && registerElement();
 
     }, [isClient, inViewElementRef.current]);
 
     useEffect(() => {
 
         return () => {
-            unRegisterElement();
+            !!unregisterInViewElement && unregisterInViewElement({
+                element: inViewElementRef.current || prevElementRef as HTMLElement,
+                callback: inViewCallback,
+                untrackOnCallback: props.untrackOnCallback
+            });
         };
     }, []);
 
