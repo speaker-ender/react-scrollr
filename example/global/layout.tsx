@@ -93,7 +93,7 @@ const Layout: React.FC = ({ children }) => {
                 </style>
                 <GlobalStyle />
                 <Head>
-                    <title>Next.JS Starter</title>
+                    <title>React Scrollr</title>
                     <link rel="icon" href="/logo.svg" />
                     <link
                         rel="preload"

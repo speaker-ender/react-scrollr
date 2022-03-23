@@ -1,3 +1,4 @@
+import { useClientHook } from '@speaker-ender/react-ssr-tools';
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 export type IObserverOptions = {
@@ -23,27 +24,30 @@ export type IInViewElement = {
 export interface IObserverContextProvider extends IObserverOptions { }
 
 export const useObserverState = (props: IObserverOptions) => {
+    const isClient = useClientHook();
     const [inViewObserver, setInViewObserver] = useState<IntersectionObserver>(null!);
     const inViewElements = useRef<IInViewElement[]>([]);
 
-    useEffect(() => {
-        if (!inViewObserver) {
-            const observerOptions: IntersectionObserverInit = {
-                root: props.root || null,
-                rootMargin: props.rootMargin || '-90px 0px -10% 0px',
-                threshold: props.threshold || [0],
-            };
+    const registerInViewElement = useCallback(
+        (inViewElement: IInViewElement) => {
+            !!inViewObserver && inViewObserver.observe(inViewElement.element);
+            inViewElements.current = ([...inViewElements.current, inViewElement]);
+        },
+        [inViewObserver, inViewElements.current]
+    );
 
-            setInViewObserver(new IntersectionObserver(updateElementInView, observerOptions));
-        }
+    const unregisterInViewElement = useCallback(
+        (inViewElement: IInViewElement) => {
+            const inViewElementRef = inViewElements.current.find((element) => element.callback === inViewElement.callback);
 
-        return () => {
-            !!inViewObserver && inViewObserver.disconnect();
-        };
-    }, [setInViewObserver]);
+            !!inViewElementRef && !!inViewObserver && inViewObserver.unobserve(inViewElementRef.element);
 
-    const updateElementInView = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+            inViewElements.current = inViewElements.current.filter(element => element !== inViewElementRef);
+        },
+        [inViewObserver, inViewElements.current]
+    );
 
+    const updateElementInView = useCallback((entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
         entries.forEach((entry: IntersectionObserverEntry) => {
             const inViewNode = entry.target;
             const callbackObject = inViewElements.current.find((object) => object.element == inViewNode);
@@ -57,25 +61,30 @@ export const useObserverState = (props: IObserverOptions) => {
                 }
             }
         });
-    };
+    }, [inViewElements.current]);
 
-    const registerInViewElement = useCallback(
-        (inViewElement: IInViewElement) => {
-            if (!!inViewObserver && !!inViewElement.element) {
-                inViewObserver.observe(inViewElement.element);
-                inViewElements.current = ([...inViewElements.current, inViewElement]);
-            }
-        },
-        [inViewObserver, inViewElements.current]
-    );
+    useEffect(() => {
+        if (!!inViewElements && !!inViewObserver) {
+            inViewElements.current.forEach((inViewElement) => inViewObserver.observe(inViewElement.element)
+            );
+        }
+    }, [inViewObserver]);
 
-    const unregisterInViewElement = useCallback(
-        (inViewElement: IInViewElement) => {
-            !!inViewObserver && !!inViewElement.element && inViewObserver.unobserve(inViewElement.element);
-            inViewElements.current = inViewElements.current.filter(element => element !== inViewElement);
-        },
-        [inViewObserver, inViewElements.current]
-    );
+    useEffect(() => {
+        if (!!isClient && !inViewObserver) {
+            const observerOptions: IntersectionObserverInit = {
+                root: props.root || null,
+                rootMargin: props.rootMargin || '-90px 0px -10% 0px',
+                threshold: props.threshold || [0],
+            };
+
+            setInViewObserver(new IntersectionObserver(updateElementInView, observerOptions));
+        }
+
+        return () => {
+            !!inViewObserver && inViewObserver.disconnect();
+        };
+    }, [isClient]);
 
     return {
         inViewObserver,
