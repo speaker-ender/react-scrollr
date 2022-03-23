@@ -92,6 +92,11 @@ export const StyledCode = styled.div`
     padding: ${theme.spacingProps.defaultSpacing};
 `
 
+export const StyledCodeHeader = styled.span`
+    font-family: ${FONTS.codeBold};
+    text-transform: none;
+`
+
 export const SmallTextStyle = css`
     font-family: ${FONTS.secondary};
     font-size: 0.6rem; 

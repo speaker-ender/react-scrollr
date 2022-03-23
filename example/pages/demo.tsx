@@ -2,16 +2,19 @@ import type { NextPage } from 'next'
 import ImageComponent from '../components/content/image';
 import { StyledImageGrid } from '../components/content/imageGrid.styles';
 import { StyledPanel } from '../global/panel.styles';
-import { Header4 } from '../global/typography';
 import { StyledPage } from '../global/page.styles';
-import { StyledGridItem } from '../components/grid.styles';
-import ImageGrid from '../components/content/imageGrid';
-import Grid from '../components/grid';
+import { Header2 } from '../global/typography';
+import ParagraphComponent from '../components/content/paragraph';
 
 const Demo: NextPage = () => {
 
     return (
         <StyledPage>
+            <Header2>Demo</Header2>
+            <StyledPanel>
+                <ParagraphComponent text="Just scroll down the page and see what happens" />
+                <ParagraphComponent text="Click on the bug in the bottom right corner to see the current scroll position update as you scroll" />
+            </StyledPanel>
             <StyledImageGrid columns={2}>
                 <ImageComponent />
                 <ImageComponent />
