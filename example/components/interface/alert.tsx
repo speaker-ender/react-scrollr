@@ -1,6 +1,6 @@
 import * as React from "react"
-import { StyledButton } from "../global/button.styles";
-import { useSiteState } from "../hooks/useSiteState";
+import { StyledButton } from "../../global/button.styles";
+import { useSiteState } from "../../hooks/useSiteState";
 import { StyledAlert, StyledAlertText, StyledAlertTitle } from "./alert.styles";
 
 export interface IAlert {

@@ -60,7 +60,7 @@ export const useScrollState = () => {
             )
         );
 
-        hasWindow && throttledSetScrollState(newScrollState);
+        throttledSetScrollState(newScrollState);
     }, [!!scrollState.current && scrollState.current.currentPosition, scrollCallbacks]);
 
     const listenToScroll = useCallback(() => {

@@ -1,7 +1,7 @@
 import { Header4, Paragraph } from 'example/global/typography';
 import * as React from "react";
 import { useCallback, useEffect, useState } from 'react';
-import { useScrollContext } from '../../../src/';
+import { useScrollContext } from '../../../src';
 
 interface IScrollInfo {
 }

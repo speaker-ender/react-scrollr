@@ -1,0 +1,69 @@
+import { hasWindow, scrollTopDistance } from "@speaker-ender/js-measure";
+import * as React from "react";
+import { useCallback, useEffect } from "react";
+import { ILayoutProps } from "..";
+import { ObserverContextProvider } from "../../../../src";
+import { theme } from "../../../global/theme.styles";
+import { useSiteState } from "../../../hooks/useSiteState";
+import Grid from "../../grid";
+import { StyledContentLayout } from "./content.layout.styles";
+
+// Content Layout
+
+// Desktop
+//  _______________________________________
+// | Header                                |
+// ----------------------------------------
+// | Sidebar  |                            |
+// |   Nav    |                            |
+// |          |        Page Content        |
+// |          |                            |
+// |          |                            |
+// |          |                            |
+// |__________|____________________________|
+// |   Social |          Footer            |
+// |___Links__|____________________________|
+
+// Mobile
+
+
+export interface IContentLayout extends ILayoutProps { }
+
+
+const ContentLayout: React.FC<IContentLayout> = ({ children }) => {
+    const { overlayActive, lockedScroll, setLockedScroll } = useSiteState();
+
+    const lockScreenHeight = useCallback(() => {
+        if (document) {
+
+            if (!!overlayActive) {
+                const scrollPosiiton = scrollTopDistance();
+                setLockedScroll(scrollPosiiton);
+                document.documentElement.style.setProperty('top', `-${scrollPosiiton}px`);
+                document.documentElement.classList.add('nav-open');
+                hasWindow && window.scrollTo(0, 0);
+            } else {
+                document.documentElement.style.setProperty('top', `0`);
+                document.documentElement.classList.remove('nav-open');
+                hasWindow && window.scrollTo(0, lockedScroll);
+            }
+
+        }
+    }, [overlayActive, setLockedScroll, lockedScroll])
+
+    useEffect(() => {
+        lockScreenHeight();
+    }, [overlayActive]);
+
+    return (
+        <StyledContentLayout>
+            <ObserverContextProvider rootMargin="-100px 0px -10% 0px" threshold={[0, 0.1, 0.25, 0.5, 0.75, 0.9, 1]}>
+                <Grid columns={12} gutter={theme.spacingProps.pageGridGutters}>
+                    {children}
+                </Grid>
+            </ObserverContextProvider>
+        </StyledContentLayout>
+    )
+}
+
+export default ContentLayout;
