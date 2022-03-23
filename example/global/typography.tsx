@@ -97,6 +97,14 @@ export const StyledCodeHeader = styled.span`
     text-transform: none;
 `
 
+export const StyledCodeProperty = styled.span`
+    color: ${theme.themeProps.secondaryLightMediumOpacity};
+`
+
+export const StyledCodePropertyType = styled.span`
+    color: ${theme.themeProps.primaryDark};
+`
+
 export const SmallTextStyle = css`
     font-family: ${FONTS.secondary};
     font-size: 0.6rem; 
