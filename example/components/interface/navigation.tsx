@@ -22,13 +22,18 @@ const Navigation: React.FC<INavigation> = (props) => {
         <StyledNavigation sidebarStyle={props.sidebarStyle} open={navOpen}>
             <StyledNavigationContent sidebarStyle={props.sidebarStyle} open={navOpen}>
                 <div>
-                    <StyledNavigationLink><Link href={'/demo'}>Demo</Link></StyledNavigationLink>
                     <StyledNavigationHeader>
                         Components
                     </StyledNavigationHeader>
                     <StyledNavigationLink><Link href={'/components/observerContextProvider'}>ObserverContextProvider</Link></StyledNavigationLink>
                     <StyledNavigationLink><Link href={'/components/scrollContextProvider'}>ScrollContextProvider</Link></StyledNavigationLink>
                     <StyledNavigationLink><Link href={'/components/inViewComponent'}>InViewComponent</Link></StyledNavigationLink>
+                    <Drawer title='Demos'>
+                        <StyledNavigationLink><Link href={'/demos/overview'}>Overview</Link></StyledNavigationLink>
+                        <StyledNavigationLink><Link href={'/demos/basicInView'}>Basic In View</Link></StyledNavigationLink>
+                        <StyledNavigationLink><Link href={'/demos/customInView'}>Custom In View</Link></StyledNavigationLink>
+                        <StyledNavigationLink><Link href={'/demos/customScroll'}>Custom Scroll Animation</Link></StyledNavigationLink>
+                    </Drawer>
                 </div>
                 <StyledNavigationFooter sidebarStyle={props.sidebarStyle}>
                     <DynamicInvertTheme />

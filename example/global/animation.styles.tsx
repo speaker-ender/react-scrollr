@@ -30,8 +30,8 @@ const transitionTiming = (
 export const transition = {
     hover: `${transitionTiming('hover')} ${BASE_ANIMATION_EASING}`,
     hoverSecondary: `${transitionTiming('hover', 1.2)} ${BASE_ANIMATION_EASING}`,
-    appear: `${transitionTiming('hover')} ${BASE_ANIMATION_EASING}`,
-    appearSecondary: `${transitionTiming('hover', 1.2)} ${BASE_ANIMATION_EASING}`,
+    appear: `${transitionTiming('base')} ${BASE_ANIMATION_EASING}`,
+    appearSecondary: `${transitionTiming('base', 1.2)} ${BASE_ANIMATION_EASING}`,
 };
 
 

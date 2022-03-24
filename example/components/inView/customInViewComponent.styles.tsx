@@ -1,69 +1,88 @@
 import styled, { css } from 'styled-components';
+import { transition } from '../../global/animation.styles';
+import { PanelStyles } from '../../global/panel.styles';
 import { theme } from '../../global/theme.styles';
 import { OPACITY } from '../../global/variables/opacity';
-export type TransitionStages = 'initial' | 'enter' | 'animate' | 'complete' | 'exit';
+
+export type TransitionStages = 'initial' | 'enter' | 'animate' | 'highlight' | 'emphasize' | 'complete' | 'exit';
 
 export interface IStyledInViewProps {
-    transitionStage: TransitionStages;
+    transitionNumberedStage: number;
 }
-
-export const animation = `500ms cubic-bezier(0.33, 1, 0.68, 1)`;
 
 export const initial = css<IStyledInViewProps>`
     opacity: ${OPACITY.full};
-    transform: translate3d(0px, 0px, 0px);
+    transform: translate3d(0px, -50%, 5px) scale(0.35) rotateX(4deg);
     background-color: ${theme.themeProps.primaryLight};
 `;
 
 export const enter = css<IStyledInViewProps>`
-    transform: translate3d(0px, 0px, 0px);
-    opacity: ${OPACITY.none};
-    background-color: ${theme.themeProps.primary};
+    transform: translate3d(0px, -50%, 5px) scale(0.45) rotateX(3deg);
+    opacity: ${OPACITY.half};
+    background-color: ${theme.themeProps.tertiaryDark};
 `;
 
 export const animate = css<IStyledInViewProps>`
-    transform: translate3d(25px, 15px, -5px);
-    opacity: ${OPACITY.none};
-    background-color: ${theme.themeProps.primaryDark};
+    transform: translate3d(0px, -50%, 5px) scale(0.65) rotateX(2deg);
+    opacity: ${OPACITY.partial};
+    background-color: ${theme.themeProps.tertiary};
 `;
 
-export const complete = css<IStyledInViewProps>`
-    transform: translate3d(40px, 50px, -15px);
+export const highlight = css<IStyledInViewProps>`
+    transform: translate3d(0px, -50%, 5px) scale(0.8) rotateX(1deg);
     opacity: ${OPACITY.none};
     background-color: ${theme.themeProps.secondary};
 `;
 
+export const emphasize = css<IStyledInViewProps>`
+    transform: translate3d(0px, -50%, 5px) scale(0.9) rotateX(0deg);
+    opacity: ${OPACITY.none};
+    background-color: ${theme.themeProps.primaryLight};
+`;
+
+export const complete = css<IStyledInViewProps>`
+    transform: translate3d(0px, -50%, 5px) scale(0.95) rotateX(0deg);
+    opacity: ${OPACITY.none};
+    background-color: ${theme.themeProps.primary};
+`;
+
 export const exit = css<IStyledInViewProps>`
-    transform: translate3d(0px, 0px, 0px);
+    transform: translate3d(0px, -50%, 5px);
     opacity: ${OPACITY.full};
     background-color: ${theme.themeProps.tertiary};
 `;
 
+const transitionStages = css<IStyledInViewProps>`
+    ${p => p.transitionNumberedStage >= 0 && initial}
+    ${p => p.transitionNumberedStage >= 1 && enter}
+    ${p => p.transitionNumberedStage >= 2 && animate}
+    ${p => p.transitionNumberedStage >= 3 && highlight}
+    ${p => p.transitionNumberedStage >= 4 && emphasize}
+    ${p => p.transitionNumberedStage >= 5 && complete}
+`
 
-const handleTransitionStage = (style: TransitionStages) => {
-    switch (style) {
-        case "initial":
-            return initial;
-        case "enter":
-            return enter;
-        case "animate":
-            return animate;
-        case "complete":
-            return complete;
-        case "exit":
-            return exit;
-        default:
-            return initial;
-    }
-};
+export const StyledCustomInViewPanel = styled.div`
+        ${PanelStyles}
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        min-height: 80%;
+        margin: 0;
+        opacity: ${OPACITY.full};
+        transform: translate3d(0px, -50%, 5px);
+        background-color: ${theme.themeProps.primaryLight};
+        transition: opacity ${transition.appear}, transform ${transition.appearSecondary}, background-color ${transition.appearSecondary};
+        backface-visibility: hidden;
+        will-change: transform, opacity, background-color;
+`;
 
 export const StyledCustomInViewWrapper = styled.div`
-        width: 100%;
+        position: relative;
         height: 100%;
-        transform: translate3d(0px, 0px, 0px);
-        opacity: ${OPACITY.full};
-        background-color: ${theme.themeProps.primaryDark};
-        transition: opacity ${animation}, transform ${animation}, background-color ${animation};
+
+        perspective: 100px;
+        transform-style: preserve-3d;
 `;
 
 export const StyledCustomInView = styled.div<IStyledInViewProps>`
@@ -72,8 +91,7 @@ export const StyledCustomInView = styled.div<IStyledInViewProps>`
     height: 100vh;
     overflow: hidden;
 
-    & ${StyledCustomInViewWrapper} {
-
-        ${p => handleTransitionStage(p.transitionStage)}
+    & ${StyledCustomInViewPanel} {
+        ${transitionStages}
     }
 `;

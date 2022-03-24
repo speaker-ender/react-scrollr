@@ -4,15 +4,21 @@ import enderImage from '../../public/ender-trace-best-small.svg'
 import { StyledImage } from "./image.styles";
 import { InViewComponent } from "../../../src";
 
-const ImageComponent: React.FC = (props) => {
+export interface IImageComponent {
+    transitionInView?: boolean;
+}
 
-    return (
+const ImageComponent: React.FC<IImageComponent> = (props) => {
+
+    return props.transitionInView ?
         <InViewComponent>
             <StyledImage>
                 <Image src={enderImage} layout="responsive"></Image>
             </StyledImage>
-        </InViewComponent>
-    )
+        </InViewComponent> :
+        <StyledImage>
+            <Image src={enderImage} layout="responsive"></Image>
+        </StyledImage>
 }
 
 export default ImageComponent;

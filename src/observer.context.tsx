@@ -15,8 +15,10 @@ export const ObserverContext = createContext<IObserverContext | null>(
     null
 );
 
+export type InViewCallback = (isIntersecting: boolean, threshold: number) => void;
+
 export type IInViewElement = {
-    callback: (isIntersecting: boolean, threshold: number) => void;
+    callback: InViewCallback;
     untrackOnCallback?: boolean;
     element: Element;
 };
@@ -54,11 +56,6 @@ export const useObserverState = (props: IObserverOptions) => {
 
             if (!!callbackObject) {
                 callbackObject.callback(entry.isIntersecting, entry.intersectionRatio);
-
-                if (entry.isIntersecting && callbackObject.untrackOnCallback) {
-                    callbackObject.untrackOnCallback && unregisterInViewElement(callbackObject);
-                    observer.unobserve(inViewNode);
-                }
             }
         });
     }, [inViewElements.current]);
