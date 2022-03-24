@@ -57,7 +57,7 @@ const ContentLayout: React.FC<IContentLayout> = ({ children }) => {
 
     return (
         <StyledContentLayout>
-            <ObserverContextProvider rootMargin="-100px 0px -10% 0px" threshold={[0, 0.1, 0.25, 0.5, 0.75, 0.9, 1]}>
+            <ObserverContextProvider rootMargin="-200px 0px -10% 0px" threshold={[0, 0.1, 0.25, 0.5, 0.75, 0.9, 1]}>
                 <Grid columns={12} gutter={theme.spacingProps.pageGridGutters}>
                     {children}
                 </Grid>

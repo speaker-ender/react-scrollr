@@ -5,9 +5,19 @@ import { useClientHook } from '@speaker-ender/react-ssr-tools';
 
 const SCROLL_INTERVAL = 10;
 
+export type IScrollOptions = {
+    scrollStateInterval: number;
+    scrollCallbackInterval: number;
+}
+
 export type IScrollState = ReturnType<typeof useScrollState>;
 
+type IScrollContext = IScrollState & IScrollOptions;
+
 export const ScrollContext = createContext<IScrollState>(null!);
+
+export interface IScrollContextProvider extends Partial<IScrollOptions> { }
+
 
 export interface ScrollState {
     currentPosition: number,
@@ -24,7 +34,7 @@ const selectScrollState = (
 
 export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
-export const useScrollState = () => {
+export const useScrollState = ({ scrollStateInterval, scrollCallbackInterval }: IScrollOptions) => {
     const isClientSide = useClientHook();
     const scrollState = useRef<ScrollState | undefined>(selectScrollState());
     const scrollCallbacks = useRef<ScrollCallback[]>([]);
@@ -32,8 +42,8 @@ export const useScrollState = () => {
 
 
     const registerScrollCallback = useCallback(
-        (scrollCallback: ScrollCallback) => {
-            scrollCallbacks.current = ([...scrollCallbacks.current, scrollCallback]);
+        (scrollCallback: ScrollCallback, interval?: number) => {
+            scrollCallbacks.current = ([...scrollCallbacks.current, throttle(interval || scrollCallbackInterval, scrollCallback)]);
         },
         [scrollCallbacks.current]
     );
@@ -45,8 +55,11 @@ export const useScrollState = () => {
         [scrollCallbacks.current]
     );
 
-    const throttledSetScrollState = throttle(SCROLL_INTERVAL, (newScrollState) => scrollState.current = newScrollState);
+    const throttledScrollCallback = useCallback((newScrollState) => {
+        scrollState.current = newScrollState;
+    }, []);
 
+    const throttledSetScrollState = throttle(scrollStateInterval, throttledScrollCallback);
 
     const handleScrollEvent = useCallback(() => {
         const newScrollState = selectScrollState(
@@ -59,7 +72,6 @@ export const useScrollState = () => {
                 !!newScrollState ? newScrollState.prevPosition : 0
             )
         );
-
         throttledSetScrollState(newScrollState);
     }, [!!scrollState.current && scrollState.current.currentPosition, scrollCallbacks]);
 
@@ -105,12 +117,12 @@ export const useScrollContext = () => {
     return scrollContext;
 };
 
-export const ScrollContextProvider: React.FC = ({ children }) => {
-    const scrollState = useScrollState();
+export const ScrollContextProvider: React.FC<IScrollContextProvider> = (props) => {
+    const scrollState = useScrollState({ scrollStateInterval: SCROLL_INTERVAL, scrollCallbackInterval: SCROLL_INTERVAL, ...props });
 
     return (
         <ScrollContext.Provider value={scrollState}>
-            {children}
+            {props.children}
         </ScrollContext.Provider>
     );
 };

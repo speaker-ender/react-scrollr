@@ -1,6 +1,6 @@
 import { useClientHook } from '@speaker-ender/react-ssr-tools';
 import * as React from 'react';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { usePrevious } from './helpers/hooks';
 import { StyledInView, TransitionStyles } from './inViewComponent.styles';
 import { useObserverContext } from './observer.context';
