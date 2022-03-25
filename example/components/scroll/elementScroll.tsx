@@ -1,7 +1,5 @@
-import { CSSProperties, FC, ForwardedRef, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useScrollState } from '../../../src/scroll.context';
-import { StyledHeaderTitle } from '../interface/header.styles';
-import { StyledPanel } from '../../global/panel.styles';
 import { Header3 } from '../../global/typography';
 import { StyledScrollBody, StyledScrollContainer, StyledScrollInfo } from './elementScroll.styles';
 import ParagraphComponent from '../content/paragraph';

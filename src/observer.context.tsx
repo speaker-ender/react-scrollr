@@ -1,9 +1,9 @@
 import { useClientHook } from '@speaker-ender/react-ssr-tools';
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 export type IObserverOptions = {
     rootMargin?: string;
-    root?: Element | Document | null;
+    root?: MutableRefObject<HTMLElement | null> | null;
     threshold?: number[];
 }
 
@@ -69,8 +69,9 @@ export const useObserverState = (props: IObserverOptions) => {
 
     useEffect(() => {
         if (!!isClient && !inViewObserver) {
+
             const observerOptions: IntersectionObserverInit = {
-                root: props.root || null,
+                root: !!props.root ? props.root.current : null,
                 rootMargin: props.rootMargin || '-90px 0px -10% 0px',
                 threshold: props.threshold || [0],
             };

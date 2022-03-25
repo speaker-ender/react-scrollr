@@ -10,7 +10,7 @@ const ObserverContextProviderPage: NextPage = () => {
             parameters={[
                 {
                     name: "root",
-                    type: "Element | Document | null",
+                    type: "MutableRefObject<HTMLElement | null> | null",
                     optional: true
                 },
                 {

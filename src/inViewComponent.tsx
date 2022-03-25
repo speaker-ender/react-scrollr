@@ -39,6 +39,13 @@ export const InViewComponent: React.FC<IInViewComponent> = props => {
             callback: inViewCallback,
         });
 
+        return () => {
+            !!unregisterInViewElement && unregisterInViewElement({
+                element: prevElementRef as HTMLElement,
+                callback: inViewCallback,
+            });
+        };
+
     }, [isClient, inViewElementRef.current]);
 
     useEffect(() => {

@@ -8,7 +8,7 @@ import ParagraphComponent from '../../components/content/paragraph';
 import { InViewComponent, ObserverContextProvider } from '../../../src';
 import { useCallback, useState } from 'react';
 
-const BasicInView: NextPage = () => {
+const InViewAnimationsPage: NextPage = () => {
     const [currentThreshold, setCurrentThreshold] = useState(0);
 
     const inViewCallback = useCallback((isIntersecting: boolean, threshold: number) => {
@@ -19,7 +19,7 @@ const BasicInView: NextPage = () => {
         <StyledPage>
             <ObserverContextProvider rootMargin="-200px 0px -5% 0px" threshold={[0, 0.1, 0.25, 0.5, 0.75, 0.9, 1]}>
                 <InViewComponent transitionStyle='fade-up'>
-                    <Header2>Basic In View</Header2>
+                    <Header2>In View Animations</Header2>
                 </InViewComponent>
                 <InViewComponent transitionStyle='fade-up'>
                     <StyledPanel>
@@ -101,4 +101,4 @@ const BasicInView: NextPage = () => {
     )
 }
 
-export default BasicInView
+export default InViewAnimationsPage

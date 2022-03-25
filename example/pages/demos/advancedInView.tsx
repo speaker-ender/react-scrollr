@@ -5,13 +5,14 @@ import ParagraphComponent from '../../components/content/paragraph';
 import { ObserverContextProvider } from '../../../src';
 import { CustomInViewComponent } from '../../components/inView/customInViewComponent';
 
-const CustomInView: NextPage = () => {
+const AdvancedInViewPage: NextPage = () => {
 
     return (
         <StyledPage>
             <ObserverContextProvider rootMargin="-10% 0px -10% 0px" threshold={[0, 0.1, 0.25, 0.5, 0.75, 0.9, 1]}>
                 <CustomInViewComponent>
-                    <Header2>Custom In-View Component</Header2>
+                    <Header2>Advanced In View Animations</Header2>
+                    <Header2>Using A Custom In View Component</Header2>
                 </CustomInViewComponent>
                 <CustomInViewComponent>
                     <Header2>Incremental Animation</Header2>
@@ -35,4 +36,4 @@ const CustomInView: NextPage = () => {
     )
 }
 
-export default CustomInView
+export default AdvancedInViewPage
