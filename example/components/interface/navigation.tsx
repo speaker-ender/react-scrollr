@@ -38,7 +38,6 @@ const Navigation: React.FC<INavigation> = (props) => {
                         <StyledNavigationLink><Link href={'/demos/advancedInView'}>Advanced In View Animations</Link></StyledNavigationLink>
                         <StyledNavigationLink><Link href={'/demos/elementScrollState'}>Element Scroll State</Link></StyledNavigationLink>
                         <StyledNavigationLink><Link href={'/demos/headerBehaviors'}>Header Behaviors</Link></StyledNavigationLink>
-                        <StyledNavigationLink><Link href={'/demos/customScroll'}>Advanced Scroll Animation</Link></StyledNavigationLink>
                     </Drawer>
                 </div>
                 <StyledNavigationFooter sidebarStyle={props.sidebarStyle}>
