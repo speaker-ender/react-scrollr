@@ -20,7 +20,6 @@ export const StyledCustomHeaderContainer = styled(StyledContentItem)`
 export const StyledCustomHeader = styled(StyledHeader) <IStyledCustomHeader>`
     position: sticky;
     transition: ${p => p.hasTransition && `transform ${transition.appear}`};
-
 `
 
 export const StyledCustomHeaderBody = styled.div`

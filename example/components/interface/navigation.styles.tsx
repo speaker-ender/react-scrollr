@@ -87,6 +87,10 @@ export const StyledNavigationContent = styled.div<IStyledNavigation>`
     & ${StyledDrawerContentWrapper},
     & ${StyledDrawerContent} {
         pointer-events: ${p => p.open ? "" : "none"};
+
+        @media ${media.tablet} {
+            pointer-events: ${p => p.open || p.sidebarStyle ? "auto" : "none"};
+        }
     }
 
     & ${StyledDrawerContent} {
