@@ -7,7 +7,7 @@ import { StyledInvertThemeButton } from "../invertTheme.styles";
 import { InterfaceBackgroundStyles } from "../../global/background.styles";
 import { OPACITY } from "../../global/variables/opacity";
 import { ScrollbarStyles } from "../../global/scrollbar.styles";
-import { StyledDrawerContent, StyledDrawerHeader } from "../content/drawer.styles";
+import { StyledDrawerContent, StyledDrawerContentWrapper, StyledDrawerHeader } from "../content/drawer.styles";
 import { theme } from "../../global/theme.styles";
 import { transition } from "../../global/animation.styles";
 
@@ -82,6 +82,11 @@ export const StyledNavigationContent = styled.div<IStyledNavigation>`
 
     & ${StyledDrawerHeader} {
         ${NavigationHeaderStyles}
+    }
+
+    & ${StyledDrawerContentWrapper},
+    & ${StyledDrawerContent} {
+        pointer-events: ${p => p.open ? "" : "none"};
     }
 
     & ${StyledDrawerContent} {
