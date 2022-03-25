@@ -32,6 +32,7 @@ const Navigation: React.FC<INavigation> = (props) => {
                         <StyledNavigationLink><Link href={'/demos/overview'}>Overview</Link></StyledNavigationLink>
                         <StyledNavigationLink><Link href={'/demos/basicInView'}>Basic In View</Link></StyledNavigationLink>
                         <StyledNavigationLink><Link href={'/demos/customInView'}>Custom In View</Link></StyledNavigationLink>
+                        <StyledNavigationLink><Link href={'/demos/customHeaders'}>Custom Header Animations</Link></StyledNavigationLink>
                         <StyledNavigationLink><Link href={'/demos/customScroll'}>Custom Scroll Animation</Link></StyledNavigationLink>
                     </Drawer>
                 </div>

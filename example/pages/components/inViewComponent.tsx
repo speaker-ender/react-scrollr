@@ -17,6 +17,16 @@ const InViewComponentPage: NextPage = () => {
                     optional: true
                 },
                 {
+                    name: "threshold",
+                    type: "number",
+                    optional: true
+                },
+                {
+                    name: "callback",
+                    type: "(isIntersecting: boolean, threshold: number) => void",
+                    optional: true
+                },
+                {
                     name: "untrackOnCallback",
                     type: "boolean",
                     optional: true

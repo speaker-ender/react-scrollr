@@ -13,7 +13,7 @@ const CustomScroll: NextPage = () => {
     return (
         <StyledPage>
 
-            <Header2>Demo</Header2>
+            <Header2>Custom Scroll Animation</Header2>
             <StyledPanel>
                 <ParagraphComponent text="Just scroll down the page and see what happens" />
                 <ParagraphComponent text="Click on the bug in the bottom right corner to see the current scroll position update as you scroll" />
