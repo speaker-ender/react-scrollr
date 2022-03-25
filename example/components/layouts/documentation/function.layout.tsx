@@ -2,7 +2,7 @@ import * as React from "react";
 import { ILayoutProps } from "..";
 import { StyledPage } from "../../../global/page.styles";
 import { StyledPanel } from "../../../global/panel.styles";
-import { Header2, StyledCodeHeader } from "../../../global/typography";
+import { Header2, StyledCodeHeader, StyledCodeProperty, StyledCodePropertyType } from "../../../global/typography";
 import Paragraph from "../../content/paragraph";
 
 // Gallery Layout
@@ -32,13 +32,26 @@ export interface IDescriptionLayout extends ILayoutProps {
     description: string[];
 }
 
+const getFunctionParameterString = (parameter: parameter, index: number, array: parameter[]) => {
+    return <span key={parameter.name}>
+        <StyledCodeProperty>{parameter.name}</StyledCodeProperty>{parameter.optional ? '?' : ''}: <StyledCodePropertyType>{parameter.type}</StyledCodePropertyType>{`${index < array.length - 1 ? ', ' : ''}`}
+    </span>
+}
+
+const getFunctionTitle = (name: string, parameters: parameter[]) => {
+    return <>
+        {`${name}(`}
+        {parameters.map((parameter, index, array) => getFunctionParameterString(parameter, index, array))}
+        {`)`}
+    </>
+}
 
 const FunctionLayout: React.FC<IDescriptionLayout> = (props) => {
 
     return (
         <StyledPage>
             <Header2><StyledCodeHeader>
-                {props.functionName}({props.parameters && props.parameters.map((parameter, index, array) => `${parameter.name}${parameter.optional ? '?' : ''}: ${parameter.type}${index < array.length - 1 ? ', ' : ''}`)})
+                {getFunctionTitle(props.functionName, props.parameters || [])}
             </StyledCodeHeader></Header2>
             <StyledPanel>
                 {props.description.map((paragraph, index) => {
