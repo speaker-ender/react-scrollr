@@ -28,6 +28,10 @@ const Navigation: React.FC<INavigation> = (props) => {
                     <StyledNavigationLink><Link href={'/components/observerContextProvider'}>ObserverContextProvider</Link></StyledNavigationLink>
                     <StyledNavigationLink><Link href={'/components/scrollContextProvider'}>ScrollContextProvider</Link></StyledNavigationLink>
                     <StyledNavigationLink><Link href={'/components/inViewComponent'}>InViewComponent</Link></StyledNavigationLink>
+                    <StyledNavigationHeader>
+                        Hooks
+                    </StyledNavigationHeader>
+                    <StyledNavigationLink><Link href={'/hooks/useScrollState'}>useScrollState</Link></StyledNavigationLink>
                     <Drawer title='Demos'>
                         <StyledNavigationLink><Link href={'/demos/overview'}>Overview</Link></StyledNavigationLink>
                         <StyledNavigationLink><Link href={'/demos/basicInView'}>Basic In View</Link></StyledNavigationLink>

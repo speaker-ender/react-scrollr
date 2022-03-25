@@ -5,8 +5,6 @@ import { StyledPanel } from '../../global/panel.styles';
 import { StyledPage } from '../../global/page.styles';
 import { Header2 } from '../../global/typography';
 import ParagraphComponent from '../../components/content/paragraph';
-import { InViewComponent } from '../../../src';
-import { CustomInViewComponent } from '../../components/inView/customInViewComponent';
 
 const CustomScroll: NextPage = () => {
 
