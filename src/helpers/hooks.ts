@@ -33,19 +33,3 @@ export const useRegisteredCallbacks = <T extends (...args: any[]) => any>(initia
 
     return [registerCallback, unregisterCallback, callbacks];
 }
-
-export const useThrottledEventCallback = (eventName: string, interval: number, fn: (e?: Event) => void) => {
-    const isClientSide = useClientHook();
-
-    const throttledEvent = throttle(interval, fn);
-
-    useEffect(() => {
-        !!isClientSide && window.addEventListener(eventName, throttledEvent);
-
-        return () => {
-            window.removeEventListener(eventName, throttledEvent);
-        };
-    }, [isClientSide]);
-
-    return [];
-}

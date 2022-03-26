@@ -14,7 +14,7 @@ const CustomHeader: FC<ICustomHeader> = (props) => {
     const contextRef = useRef<HTMLDivElement>(null);
     const [scroll, setCurrentScroll] = useState<{ currentScroll: number, lastScroll: number }>({ currentScroll: 0, lastScroll: 0 });
     const [headerStyles, setHeaderStyles] = useState<CSSProperties>();
-    const { registerScrollCallback, unregisterScrollCallback, setElementContext } = useScrollState({ scrollStateInterval: 10, scrollCallbackInterval: 10 });
+    const { registerScrollCallback, unregisterScrollCallback, setElementContext } = useScrollState({ scrollStateInterval: 10, scrollListenerInterval: 10 });
 
     const updateCurrentScroll = useCallback((newCurrentScroll?: number, newLastScroll?: number) => {
         setCurrentScroll({
