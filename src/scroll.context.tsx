@@ -7,8 +7,8 @@ import { useRegisteredCallbacks } from './helpers/hooks';
 const SCROLL_INTERVAL = 10;
 
 export type IScrollOptions = {
-    scrollListenerInterval: number;
-    scrollStateInterval: number;
+    listenerInterval: number;
+    stateInterval: number;
     withContext?: boolean;
 }
 
@@ -34,13 +34,13 @@ const selectScrollState = (
 
 export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
-export const useScrollState = ({ scrollListenerInterval, scrollStateInterval, withContext }: IScrollOptions) => {
+export const useScrollState = ({ listenerInterval, stateInterval, withContext }: IScrollOptions) => {
     const isClientSide = useClientHook();
     const scrollState = useRef<ScrollState | undefined>(selectScrollState());
     const [elementContext, setElementContext] = useState<HTMLElement>();
     const [registerScrollCallback, unregisterScrollCallback, scrollCallbacks] = useRegisteredCallbacks<ScrollCallback>([]);
 
-    const throttledSetScrollState = throttle(scrollStateInterval, (newScrollState) => scrollState.current = newScrollState);
+    const throttledSetScrollState = throttle(stateInterval, (newScrollState) => scrollState.current = newScrollState);
 
     const handleScrollEvent = useCallback(() => {
         const newScrollState = selectScrollState(
@@ -57,7 +57,7 @@ export const useScrollState = ({ scrollListenerInterval, scrollStateInterval, wi
         throttledSetScrollState(newScrollState);
     }, [!!scrollState.current && scrollState.current.currentPosition, scrollCallbacks, elementContext]);
 
-    const throttledHandleScrollEvent = throttle(scrollListenerInterval, handleScrollEvent);
+    const throttledHandleScrollEvent = throttle(listenerInterval, handleScrollEvent);
 
     useEffect(() => {
         isClientSide && elementContext && elementContext.addEventListener('scroll', throttledHandleScrollEvent);
@@ -96,7 +96,7 @@ export const useScrollContext = () => {
 };
 
 export const ScrollContextProvider: React.FC<IScrollContextProvider> = (props) => {
-    const scrollState = useScrollState({ scrollStateInterval: SCROLL_INTERVAL, scrollListenerInterval: SCROLL_INTERVAL, withContext: true, ...props });
+    const scrollState = useScrollState({ listenerInterval: SCROLL_INTERVAL, stateInterval: SCROLL_INTERVAL, withContext: true, ...props });
 
     return (
         <ScrollContext.Provider value={scrollState}>
