@@ -1,7 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { scrollTopDistance, hasWindow } from '@speaker-ender/js-measure';
 import { throttle } from 'throttle-debounce';
-import { useClientHook } from '@speaker-ender/react-ssr-tools';
+import { useClientHook, useEventCallback } from '@speaker-ender/react-ssr-tools';
+import { useRegisteredCallbacks, useThrottledEventCallback } from './helpers/hooks';
 
 const SCROLL_INTERVAL = 10;
 
@@ -39,24 +40,9 @@ export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 export const useScrollState = ({ scrollStateInterval, scrollCallbackInterval, hasContext }: IScrollOptions) => {
     const isClientSide = useClientHook();
     const scrollState = useRef<ScrollState | undefined>(selectScrollState());
-    const scrollCallbacks = useRef<ScrollCallback[]>([]);
     const scrollingTimer = useRef<ReturnType<typeof setTimeout>>(null!);
     const [elementContext, setElementContext] = useState<HTMLElement>();
-
-
-    const registerScrollCallback = useCallback(
-        (scrollCallback: ScrollCallback, interval?: number) => {
-            scrollCallbacks.current = ([...scrollCallbacks.current, throttle(interval || scrollCallbackInterval, scrollCallback)]);
-        },
-        [scrollCallbacks.current]
-    );
-
-    const unregisterScrollCallback = useCallback(
-        (scrollCallback: ScrollCallback) => {
-            scrollCallbacks.current = scrollCallbacks.current.filter(callback => callback !== scrollCallback);
-        },
-        [scrollCallbacks.current]
-    );
+    const [registerScrollCallback, unregisterScrollCallback, scrollCallbacks] = useRegisteredCallbacks<ScrollCallback>([]);
 
     const throttledScrollCallback = useCallback((newScrollState) => {
         scrollState.current = newScrollState;
