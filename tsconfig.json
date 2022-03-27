@@ -23,7 +23,8 @@
     },
     "include": [
         "**/*.ts",
-        "**/*.tsx"
+        "**/*.tsx",
+        "build.mjs"
     ],
     "exclude": [
         "node_modules"
