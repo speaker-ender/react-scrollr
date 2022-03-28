@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { StyledPage } from '../../global/page.styles';
 import { Header2 } from '../../global/typography';
 import ParagraphComponent from '../../components/content/paragraph';
-import { ObserverContextProvider } from '../../../src';
+import { ObserverContextProvider } from '@speaker-ender/react-scrollr';
 import { CustomInViewComponent } from '../../components/inView/customInViewComponent';
 
 const AdvancedInViewPage: NextPage = () => {

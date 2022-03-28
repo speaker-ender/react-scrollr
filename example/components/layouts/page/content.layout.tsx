@@ -2,7 +2,6 @@ import { hasWindow, scrollTopDistance } from "@speaker-ender/js-measure";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
 import { ILayoutProps } from "..";
-import { ObserverContextProvider } from "../../../../src";
 import { theme } from "../../../global/theme.styles";
 import { useSiteState } from "../../../hooks/useSiteState";
 import Grid from "../../grid";

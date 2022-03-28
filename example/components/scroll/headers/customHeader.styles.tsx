@@ -1,5 +1,5 @@
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { StyledContentItem } from "../../layouts/content/contentItem.styles";
 import { ScrollbarStyles } from "../../../global/scrollbar.styles";
 import { StyledHeader } from "../../interface/header.styles";

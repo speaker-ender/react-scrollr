@@ -5,7 +5,7 @@ import { StyledPanel } from '../../global/panel.styles';
 import { StyledPage } from '../../global/page.styles';
 import { Header2, Header3, StyledCodeHeader } from '../../global/typography';
 import ParagraphComponent from '../../components/content/paragraph';
-import { InViewComponent, ObserverContextProvider } from '../../../src';
+import { InViewComponent, ObserverContextProvider } from '@speaker-ender/react-scrollr';
 import { useCallback, useState } from 'react';
 
 const InViewAnimationsPage: NextPage = () => {

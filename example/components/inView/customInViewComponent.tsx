@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { usePrevious } from '../../../src/helpers/hooks';
 import { StyledCustomInView, StyledCustomInViewPanel, StyledCustomInViewWrapper } from './customInViewComponent.styles';
-import { useObserverContext } from '../../../src/observer.context';
+import { useObserverContext } from '@speaker-ender/react-scrollr';
 
 export interface IInViewComponent {
     untrackOnCallback?: boolean;

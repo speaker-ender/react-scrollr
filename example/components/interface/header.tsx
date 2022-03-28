@@ -1,7 +1,5 @@
 import Link from "next/link";
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
-import { useScrollContext } from "../../../src";
 import { useSiteState } from "../../hooks/useSiteState";
 import { StyledHeader, StyledHeaderTitle, StyledNavButton } from "./header.styles";
 

@@ -1,6 +1,6 @@
 import { StyledCustomHeader, StyledCustomHeaderBody, StyledCustomHeaderContainer } from './customHeader.styles';
-import { CSSProperties, FC, ForwardedRef, useCallback, useEffect, useRef, useState } from 'react';
-import { useScrollState } from '../../../../src/scroll.context';
+import { CSSProperties, FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useScrollState } from '@speaker-ender/react-scrollr';
 import { StyledHeaderTitle } from '../../interface/header.styles';
 import { StyledPanel } from '../../../global/panel.styles';
 import { Header3 } from '../../../global/typography';

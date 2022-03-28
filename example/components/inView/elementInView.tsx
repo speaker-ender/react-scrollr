@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react';
-import { InViewComponent, ObserverContextProvider } from '../../../src';
+import { InViewComponent, ObserverContextProvider } from '@speaker-ender/react-scrollr';
 import { StyledPanel } from '../../global/panel.styles';
 import { Header3 } from '../../global/typography';
 import { StyledScrollBody, StyledScrollContainer } from './elementInView.styles';

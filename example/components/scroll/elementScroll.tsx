@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useScrollState } from '../../../src/scroll.context';
+import { useScrollState } from '@speaker-ender/react-scrollr';
 import { Header3 } from '../../global/typography';
 import { StyledScrollBody, StyledScrollContainer, StyledScrollInfo } from './elementScroll.styles';
 import ParagraphComponent from '../content/paragraph';
