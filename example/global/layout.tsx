@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 import { StyledNotificationTray, StyledNotificationWrapper } from "../components/interface/notificationTray.styles";
 import { useClientHook } from "@speaker-ender/react-ssr-tools";
 import ScrollInfo from "../components/debug/scrollInfo";
-import { ScrollContextProvider } from "../../src";
+import { ScrollContextProvider } from "@speaker-ender/react-scrollr";
 
 const DynamicBannerMessage = dynamic(() => import('../components/interface/bannerMessage'), {
     ssr: false,
