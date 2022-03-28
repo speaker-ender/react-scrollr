@@ -84,7 +84,6 @@ export const useScrollState = ({ listenerInterval, stateInterval, withContext }:
 };
 
 export const useScrollContext = () => {
-    console.log('triggering usescrollcontext hook');
     const scrollContext = useContext(ScrollContext);
 
     if (!scrollContext) {
@@ -97,7 +96,6 @@ export const useScrollContext = () => {
 };
 
 export const ScrollContextProvider: React.FC<IScrollContextProvider> = (props) => {
-    console.log('rendering provider');
     const scrollState = useScrollState({ listenerInterval: SCROLL_INTERVAL, stateInterval: SCROLL_INTERVAL, withContext: true, ...props });
 
     return (
