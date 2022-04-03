@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useClientHook } from "@speaker-ender/react-ssr-tools";
-import { useObserverContext } from '@speaker-ender/react-scrollr';
 import { usePrevious } from "./helpers/hooks";
+import { useObserverContext } from "./observer.context";
 
 export type InViewCallback = (isIntersecting: boolean, threshold: number) => void;
 
