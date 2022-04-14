@@ -1,12 +1,7 @@
-
 export const getCookie = (name: string) => {
-    return
-}
+  return;
+};
 
-export const setCookie = (name: string) => {
+export const setCookie = (name: string) => {};
 
-}
-
-export const removeCookie = (name: string) => {
-
-}
+export const removeCookie = (name: string) => {};

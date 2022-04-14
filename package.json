@@ -1,69 +1,70 @@
 {
-    "name": "@speaker-ender/react-scrollr",
-    "author": "3nder",
-    "description": "React tools for scroll animations",
-    "version": "0.1.9",
-    "main": "dist/index.cjs.js",
-    "module": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
-    "dependencies": {
-        "@speaker-ender/js-measure": "0.2.2",
-        "@speaker-ender/react-ssr-tools": "0.1.4",
-        "throttle-debounce": "^3.0.1"
-    },
-    "devDependencies": {
-        "@types/node": "^17.0.21",
-        "@types/react": "^17.0.43",
-        "@types/react-dom": "^17.0.11",
-        "@types/react-transition-group": "^4.4.4",
-        "@types/styled-components": "^5.1.23",
-        "@types/throttle-debounce": "^2.1.0",
-        "custom-event-polyfill": "^1.0.7",
-        "domhandler": "^4.3.1",
-        "dotenv": "^16.0.0",
-        "esbuild": "^0.14.30",
-        "esbuild-node-externals": "^1.4.1",
-        "prop-types": "^15.8.1",
-        "react-transition-group": "^4.4.2",
-        "styled-components": "^5.3.5",
-        "ts-node": "^10.7.0",
-        "cross-env": "^7.0.3",
-        "prettier": "^2.6.2",
-        "typescript": "^4.6.3"
-    },
-    "peerDependencies": {
-        "react": ">= 17.0.0",
-        "react-dom": ">= 17.0.0",
-        "styled-components": ">= 5.3.5"
-    },
-    "keywords": [
-        "react",
-        "scroller"
-    ],
-    "license": "MIT",
-    "scripts": {
-        "build:package": "npm run build:esbuild && npm run build:types",
-        "build:esbuild": "node build.mjs",
-        "build:types": "tsc --project tsconfig.build.json",
-        "clean NPM": "npm ci",
-        "install NPM": "npm install",
-        "dev": "npm run dev -w example",
-        "build": "npm run build -w example",
-        "start": "npm run start -w example",
-        "postpublish": "npm run publish-npm",
-        "publish-npm": "npm publish --access public --ignore-scripts --@speaker-ender:registry='https://registry.npmjs.org'"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/speaker-ender/react-scrollr"
-    },
-    "bugs": {
-        "url": "https://github.com/speaker-ender/react-scrollr/issues"
-    },
-    "workspaces": [
-        "example"
-    ]
+  "name": "@speaker-ender/react-scrollr",
+  "author": "3nder",
+  "description": "React tools for scroll animations",
+  "version": "0.1.10",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@speaker-ender/js-measure": "0.2.2",
+    "@speaker-ender/react-ssr-tools": "0.1.4",
+    "throttle-debounce": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.24",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
+    "@types/react-transition-group": "^4.4.4",
+    "@types/styled-components": "^5.1.25",
+    "@types/throttle-debounce": "^4.0.0",
+    "custom-event-polyfill": "^1.0.7",
+    "domhandler": "^5.0.2",
+    "dotenv": "^16.0.0",
+    "esbuild": "^0.14.36",
+    "esbuild-node-externals": "^1.4.1",
+    "prop-types": "^15.8.1",
+    "react-transition-group": "^4.4.2",
+    "styled-components": "^5.3.5",
+    "ts-node": "^10.7.0",
+    "cross-env": "^7.0.3",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.3"
+  },
+  "peerDependencies": {
+    "react": ">= 17.0.0",
+    "react-dom": ">= 17.0.0",
+    "styled-components": ">= 5.3.5"
+  },
+  "keywords": [
+    "react",
+    "scroller"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build:package": "npm run build:esbuild && npm run build:types",
+    "build:esbuild": "node build.mjs",
+    "build:types": "tsc --project tsconfig.build.json",
+    "clean NPM": "npm ci",
+    "install NPM": "npm install",
+    "dev": "npm run dev -w example",
+    "build": "npm run build -w example",
+    "start": "npm run start -w example",
+    "postpublish": "npm run publish-npm",
+    "publish-npm": "npm publish --access public --ignore-scripts --@speaker-ender:registry='https://registry.npmjs.org'",
+    "formatAll": "npx prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/speaker-ender/react-scrollr"
+  },
+  "bugs": {
+    "url": "https://github.com/speaker-ender/react-scrollr/issues"
+  },
+  "workspaces": [
+    "example"
+  ]
 }

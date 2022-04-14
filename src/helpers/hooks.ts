@@ -1,33 +1,35 @@
 import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 
 export const usePrevious = <T>(value: T): T => {
-    const ref: any = useRef<T>();
+  const ref: any = useRef<T>();
 
-    useEffect(() => {
-        ref.current = value;
-    }, [value]);
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
 
-    return ref.current;
-}
+  return ref.current;
+};
 
-export const useRegisteredCallbacks = <T extends (...args: any[]) => any>(initialValue: any): [
-    (callback: T) => void, (callback: T) => void, MutableRefObject<T[]>
-] => {
-    const callbacks = useRef<T[]>(initialValue);
+export const useRegisteredCallbacks = <T extends (...args: any[]) => any>(
+  initialValue: any
+): [(callback: T) => void, (callback: T) => void, MutableRefObject<T[]>] => {
+  const callbacks = useRef<T[]>(initialValue);
 
-    const registerCallback = useCallback(
-        (callback: T) => {
-            callbacks.current = ([...callbacks.current, callback]);
-        },
-        [callbacks.current]
-    );
+  const registerCallback = useCallback(
+    (callback: T) => {
+      callbacks.current = [...callbacks.current, callback];
+    },
+    [callbacks.current]
+  );
 
-    const unregisterCallback = useCallback(
-        (callbackToRemove: T) => {
-            callbacks.current = callbacks.current.filter(callback => callback !== callbackToRemove);
-        },
-        [callbacks.current]
-    );
+  const unregisterCallback = useCallback(
+    (callbackToRemove: T) => {
+      callbacks.current = callbacks.current.filter(
+        (callback) => callback !== callbackToRemove
+      );
+    },
+    [callbacks.current]
+  );
 
-    return [registerCallback, unregisterCallback, callbacks];
-}
+  return [registerCallback, unregisterCallback, callbacks];
+};
