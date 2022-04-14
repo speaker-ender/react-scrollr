@@ -41,7 +41,7 @@ export interface ILibraryLayout extends ILayoutProps {
   children?: ReactNode;
 }
 
-const LibraryLayout: React.FC<ILayoutProps> = ({ children }) => {
+const LibraryLayout: React.FC<ILibraryLayout> = ({ children }) => {
   const { overlayActive } = useSiteState();
 
   return (

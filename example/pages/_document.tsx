@@ -1,5 +1,6 @@
 import Document, {
   DocumentContext,
+  DocumentInitialProps,
   Head,
   Html,
   Main,
@@ -8,18 +9,25 @@ import Document, {
 import { ServerStyleSheet } from "styled-components";
 import {
   DARK_THEME,
+  getThemePropsString,
   LIGHT_THEME,
-  setColorsByTheme,
 } from "../global/theme.styles";
+import { setColorsByTheme } from "../helpers/preLoad";
+
+const getCodeToRunOnClient = () => {
+  const functionString = String(setColorsByTheme)
+    .replace('"DARK_THEME"', JSON.stringify(getThemePropsString(DARK_THEME)))
+    .replace('"LIGHT_THEME"', JSON.stringify(getThemePropsString(LIGHT_THEME)));
+
+  return `(${functionString})()`;
+};
 
 const MagicScriptTag = () => {
-  const functionString = String(setColorsByTheme)
-    .replace("'DARK_THEME'", JSON.stringify(DARK_THEME))
-    .replace("'LIGHT_THEME'", JSON.stringify(LIGHT_THEME));
-  const codeToRunOnClient = `(${functionString})()`;
-
-  return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />;
+  return (
+    <script dangerouslySetInnerHTML={{ __html: getCodeToRunOnClient() }} />
+  );
 };
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
@@ -35,13 +43,8 @@ export default class MyDocument extends Document {
       const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
-        ),
-      };
+        styles: [initialProps.styles, sheet.getStyleElement()],
+      } as DocumentInitialProps;
     } finally {
       sheet.seal();
     }
@@ -50,7 +53,9 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head></Head>
+        <Head>
+          <style id="initial-theme" />
+        </Head>
         <MagicScriptTag />
         <body>
           <Main />
