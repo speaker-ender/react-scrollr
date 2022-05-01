@@ -1,11 +1,11 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import { StyledInView, TransitionStyles } from "./inViewComponent.styles";
 import { InViewCallback } from "./observer.context";
 import { useInViewState } from "./useInViewState";
+import { useInViewTransition } from "./useInViewTransition";
 
 export interface IInViewComponent {
-  transitionStyle?: TransitionStyles;
+  transitionStyle?: "fade-in" | "fade-up" | "fade-side" | "none";
   threshold?: number;
   callback?: InViewCallback;
   untrackOnCallback?: boolean;
@@ -13,19 +13,21 @@ export interface IInViewComponent {
 }
 
 export const InViewComponent: React.FC<IInViewComponent> = (props) => {
-  const [inViewRef, isInView] = useInViewState(
+  const [inViewRef] = useInViewTransition(
     props.threshold,
     props.untrackOnCallback,
     props.callback
   );
 
   return (
-    <StyledInView
-      transitionStyle={props.transitionStyle}
+    <div
+      style={{
+        transition: "opacity 350ms ease-in-out",
+        opacity: "0",
+      }}
       ref={inViewRef}
-      inView={isInView}
     >
       {props.children}
-    </StyledInView>
+    </div>
   );
 };

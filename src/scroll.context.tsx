@@ -1,22 +1,19 @@
 import React, {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { scrollTopDistance, hasWindow } from "@speaker-ender/js-measure";
-import { throttle } from "throttle-debounce";
-import { useClientHook } from "@speaker-ender/react-ssr-tools";
+import {
+  useClientHook,
+  useEventCallback,
+} from "@speaker-ender/react-ssr-tools";
 import { useRegisteredCallbacks } from "./helpers/hooks";
 
-const SCROLL_INTERVAL = 10;
-
 export type IScrollOptions = {
-  listenerInterval: number;
-  stateInterval: number;
   withContext?: boolean;
 };
 
@@ -46,76 +43,63 @@ const selectScrollState = (
 
 export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
-export const useScrollState = ({
-  listenerInterval,
-  stateInterval,
-  withContext,
-}: IScrollOptions) => {
+export const useScrollState = ({ withContext }: IScrollOptions) => {
   const isClientSide = useClientHook();
-  const scrollState = useRef<ScrollState | undefined>(selectScrollState());
+  const rafRunning = useRef(false);
+  const scrollRef = useRef<ScrollState | undefined>(selectScrollState());
   const [elementContext, setElementContext] = useState<HTMLElement>();
   const [registerScrollCallback, unregisterScrollCallback, scrollCallbacks] =
     useRegisteredCallbacks<ScrollCallback>([]);
 
-  const throttledSetScrollState = throttle(
-    stateInterval,
-    (newScrollState) => (scrollState.current = newScrollState)
-  );
-
-  const handleScrollEvent = useCallback(() => {
+  const raf = useEventCallback(() => {
     const newScrollState = selectScrollState(
-      scrollState.current && scrollState.current.currentPosition,
+      scrollRef.current && scrollRef.current.currentPosition,
       elementContext
     );
 
-    scrollCallbacks.current.map((scrollCallback) =>
-      scrollCallback(
-        !!newScrollState ? newScrollState.currentPosition : 0,
-        !!newScrollState ? newScrollState.prevPosition : 0
-      )
-    );
-    throttledSetScrollState(newScrollState);
-  }, [
-    !!scrollState.current && scrollState.current.currentPosition,
-    scrollCallbacks,
-    elementContext,
-  ]);
+    if (
+      newScrollState?.currentPosition !== scrollRef.current?.currentPosition
+    ) {
+      scrollCallbacks.current.map((scrollCallback: ScrollCallback) =>
+        scrollCallback(
+          newScrollState ? newScrollState.currentPosition : 0,
+          newScrollState ? newScrollState.prevPosition : 0
+        )
+      );
 
-  const throttledHandleScrollEvent = throttle(
-    listenerInterval,
-    handleScrollEvent
-  );
+      scrollRef.current = newScrollState;
+    } else {
+      rafRunning.current = false;
+    }
 
-  useEffect(() => {
-    isClientSide &&
-      elementContext &&
-      elementContext.addEventListener("scroll", throttledHandleScrollEvent);
+    rafRunning.current && window.requestAnimationFrame(raf);
+  }, [scrollRef.current, scrollCallbacks]);
 
-    return () => {
-      elementContext &&
-        elementContext.removeEventListener(
-          "scroll",
-          throttledHandleScrollEvent
-        );
-    };
-  }, [isClientSide, elementContext]);
+  const startScroll = useEventCallback(() => {
+    if (!rafRunning.current && isClientSide && withContext) {
+      if (withContext || elementContext) {
+        rafRunning.current = true;
+        window.requestAnimationFrame(raf);
+      }
+    }
+  }, [isClientSide]);
 
   useEffect(() => {
-    isClientSide &&
-      withContext &&
-      window.addEventListener("scroll", throttledHandleScrollEvent);
-
+    if (isClientSide && withContext) {
+      window.addEventListener("scroll", startScroll);
+    }
     return () => {
-      window.removeEventListener("scroll", throttledHandleScrollEvent);
+      rafRunning.current = false;
+      window.removeEventListener("scroll", startScroll);
     };
   }, [isClientSide]);
 
-  return {
-    scrollState,
+  return [
+    scrollRef,
     registerScrollCallback,
     unregisterScrollCallback,
     setElementContext,
-  };
+  ];
 };
 
 export const useScrollContext = () => {
@@ -132,8 +116,6 @@ export const ScrollContextProvider: React.FC<IScrollContextProvider> = (
   props
 ) => {
   const scrollState = useScrollState({
-    listenerInterval: SCROLL_INTERVAL,
-    stateInterval: SCROLL_INTERVAL,
     withContext: true,
     ...props,
   });
