@@ -7,7 +7,7 @@ interface IScrollInfo {}
 
 const ScrollInfo: React.FC<IScrollInfo> = (props) => {
   const [currentScroll, setCurrentScroll] = useState<number>(0);
-  const { registerScrollCallback, unregisterScrollCallback } =
+  const [scrollRef, registerScrollCallback, unregisterScrollCallback] =
     useScrollContext();
 
   const updateCurrentScroll = useCallback(

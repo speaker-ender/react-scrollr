@@ -93,6 +93,17 @@ export const useScrollState = ({
   }, [isClientSide]);
 
   useEffect(() => {
+    isClientSide &&
+      elementContext &&
+      elementContext.addEventListener("scroll", startScroll);
+
+    return () => {
+      elementContext &&
+        elementContext.removeEventListener("scroll", startScroll);
+    };
+  }, [isClientSide, elementContext]);
+
+  useEffect(() => {
     if (isClientSide && withContext) {
       window.addEventListener("scroll", startScroll);
     }

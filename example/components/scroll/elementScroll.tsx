@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
-import { useScrollState } from "@speaker-ender/react-scrollr";
+import { useScrollContext } from "@speaker-ender/react-scrollr";
 import { Header3 } from "../../global/typography";
 import {
   StyledScrollBody,
@@ -16,11 +16,12 @@ const ElementScroll: FC<IElementScroll> = (props) => {
     currentScroll: number;
     lastScroll: number;
   }>({ currentScroll: 0, lastScroll: 0 });
-  const {
+  const [
+    scrollRef,
     registerScrollCallback,
     unregisterScrollCallback,
     setElementContext,
-  } = useScrollState({ stateInterval: 10, listenerInterval: 10 });
+  ] = useScrollContext();
 
   const updateCurrentScroll = useCallback(
     (newCurrentScroll?: number, newLastScroll?: number) => {

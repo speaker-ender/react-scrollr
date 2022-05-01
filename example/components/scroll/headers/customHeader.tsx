@@ -11,7 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useScrollState } from "@speaker-ender/react-scrollr";
+import { useScrollContext } from "@speaker-ender/react-scrollr";
 import { StyledHeaderTitle } from "../../interface/header.styles";
 import { StyledPanel } from "../../../global/panel.styles";
 import { Header3 } from "../../../global/typography";
@@ -31,11 +31,12 @@ const CustomHeader: FC<ICustomHeader> = (props) => {
     lastScroll: number;
   }>({ currentScroll: 0, lastScroll: 0 });
   const [headerStyles, setHeaderStyles] = useState<CSSProperties>();
-  const {
+  const [
+    scrollRef,
     registerScrollCallback,
     unregisterScrollCallback,
     setElementContext,
-  } = useScrollState({ stateInterval: 10, listenerInterval: 10 });
+  ] = useScrollContext();
 
   const updateCurrentScroll = useCallback(
     (newCurrentScroll?: number, newLastScroll?: number) => {
