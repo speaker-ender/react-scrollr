@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  MutableRefObject,
   ReactNode,
   useContext,
   useEffect,
@@ -43,7 +44,14 @@ const selectScrollState = (
 
 export type ScrollCallback = (scroll?: number, lastScroll?: number) => void;
 
-export const useScrollState = ({ withContext }: IScrollOptions) => {
+export const useScrollState = ({
+  withContext,
+}: IScrollOptions): [
+  scrollRef: MutableRefObject<ScrollState | undefined>,
+  registerScrollCallback: (callback: ScrollCallback) => void,
+  unregisterScrollCallback: (callback: ScrollCallback) => void,
+  setElementContext: (element: HTMLElement) => void
+] => {
   const isClientSide = useClientHook();
   const rafRunning = useRef(false);
   const scrollRef = useRef<ScrollState | undefined>(selectScrollState());
