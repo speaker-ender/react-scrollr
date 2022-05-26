@@ -2,4 +2,4 @@
 
 #### Scroll Based Animation Tools for React.js
 
-#### [DOCS](http://react-scrollr.3nder.io/)
+#### [DOCS](https://react-scrollr.3nder.io/)
