@@ -13,7 +13,7 @@ export const FONTS = {
 
 export const Header1Style = css`
   font-family: ${FONTS.mainBold};
-  font-size: 4rem;
+  font-size: 2.5rem;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   overflow-wrap: break-word;
@@ -26,7 +26,7 @@ export const Header1 = styled.h1`
 
 export const Header2Style = css`
   font-family: ${FONTS.main};
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   text-transform: uppercase;
   overflow-wrap: break-word;
 `;
@@ -38,7 +38,7 @@ export const Header2 = styled.h2`
 
 export const Header3Style = css`
   font-family: ${FONTS.mainBold};
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   overflow-wrap: break-word;
 `;
@@ -50,7 +50,7 @@ export const Header3 = styled.h3`
 
 export const Header4Style = css`
   font-family: ${FONTS.mainBold};
-  font-size: 1.5rem;
+  font-size: 0.6rem;
   overflow-wrap: break-word;
 `;
 
@@ -72,7 +72,7 @@ export const Header5 = styled.h5`
 
 export const ParagraphTextStyle = css`
   font-family: ${FONTS.secondary};
-  font-size: 1rem;
+  font-size: 0.8rem;
 `;
 
 export const Paragraph = styled.p`
@@ -97,14 +97,6 @@ export const StyledCodeHeader = styled.span`
   text-transform: none;
 `;
 
-export const StyledCodeProperty = styled.span`
-  color: ${theme.themeProps.secondaryLightMediumOpacity};
-`;
-
-export const StyledCodePropertyType = styled.span`
-  color: ${theme.themeProps.primaryDark};
-`;
-
 export const SmallTextStyle = css`
   font-family: ${FONTS.secondary};
   font-size: 0.6rem;
@@ -112,7 +104,7 @@ export const SmallTextStyle = css`
 
 export const NavigationTextStyle = css`
   font-family: ${FONTS.main};
-  font-size: 2rem;
+  font-size: 1.2rem;
 `;
 
 export const NavigationSubPageTextStyle = css`

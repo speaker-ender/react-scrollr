@@ -41,7 +41,7 @@ export const StyledOverlayLayout = styled.div<IStyledOverlayLayout>`
   overflow: hidden;
   z-index: ${LAYERS.overlay};
 
-  @media ${media.tablet} {
+  @media ${media.tabletLandscape} {
     grid:
       "f . . . . d d s" min-content
       "f . . . . n n s" min-content

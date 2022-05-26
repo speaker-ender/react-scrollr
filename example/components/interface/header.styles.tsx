@@ -14,10 +14,10 @@ export const StyledHeader = styled.div<IStyledHeader>`
   ${InterfaceBackgroundStyles}
   position: sticky;
   display: grid;
-  grid-template-columns: 25px repeat(3, 1fr) min-content 25px;
+  grid-template-columns: 1rem repeat(3, 1fr) min-content 1rem;
   grid-template-rows: 1fr;
-  column-gap: 25px;
-  row-gap: 25px;
+  column-gap: 1rem;
+  row-gap: 1rem;
   align-content: center;
   top: 0;
   width: 100%;
@@ -41,18 +41,18 @@ export const HamPartStyles = css`
   border-radius: 0.05rem;
   transition: transform ${transition.appear},
     background-color ${transition.appear}, opacity ${transition.hover};
-  transform-origin: 22px 0px;
+  transform-origin: 1.325rem 0px;
 
   &:nth-last-of-type(2) {
-    transform-origin: 19px 2px;
+    transform-origin: 1.175rem 0.075rem;
   }
 `;
 
 export const HamPartOpenStyles = css`
-  transform: translate3d(0px, 22px, 0) rotate(0deg);
+  transform: translate3d(0px, 1.46rem, 0) rotate(0deg);
 
   &:nth-last-of-type(2) {
-    transform: translate3d(0px, 10px, 0) rotate(0deg);
+    transform: translate3d(0px, 0.66rem, 0) rotate(0deg);
   }
 `;
 

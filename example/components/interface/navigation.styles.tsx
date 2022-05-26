@@ -97,8 +97,8 @@ export const StyledNavGithubLink = styled.a`
 export const StyledNavGithub = styled.div`
   ${LinkStyles}
   position: relative;
-  height: 2rem;
-  width: 2rem;
+  height: 1.5rem;
+  width: 1.5rem;
   grid-column: 2;
   grid-row: 2;
   align-self: center;
@@ -153,7 +153,7 @@ export const StyledNavigationFooter = styled.div<IStyledNavigation>`
   grid-template-columns: 0 1fr 1fr 0;
   grid-template-rows: repeat(3, min-content);
   grid-column-gap: ${(p) => p.theme.spacingProps.defaultSpacing};
-  grid-row-gap: calc(${(p) => p.theme.spacingProps.textSpacingX});
+  grid-row-gap: calc(${(p) => p.theme.spacingProps.defaultSpacing});
 
   @media ${media.tabletLandscape} {
     ${(p) => p.sidebarStyle && InterfaceBackgroundStyles};
@@ -167,8 +167,8 @@ export const StyledNavigationFooter = styled.div<IStyledNavigation>`
 
   & ${StyledInvertThemeButton} {
     position: relative;
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     grid-column: 3;
     grid-row: 2;
     justify-self: end;

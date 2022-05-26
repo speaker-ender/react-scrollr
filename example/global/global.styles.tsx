@@ -5,6 +5,18 @@ import { media } from "./variables/breakpoints";
 import { spacingProps } from "./variables/cssProp";
 
 export const GlobalStyle = createGlobalStyle`
+  font-size: 15px;
+
+ :root {
+  @media ${media.tablet} {
+      font-size: 21px;
+    }
+
+    @media ${media.desktop} {
+      font-size: 28px;
+    }
+ }
+
   body {
     ${spacingProps}
 
@@ -20,17 +32,6 @@ export const GlobalStyle = createGlobalStyle`
     transition: background-color ${transition.appear}, color ${
   transition.appearSecondary
 };
-    font-size: 12px;
-
-    @media ${media.tablet} {
-      font-size: 15px;
-
-    }
-
-    @media ${media.desktop} {
-      font-size: 17px;
-
-    }
   }
 
   &.modal-open,
