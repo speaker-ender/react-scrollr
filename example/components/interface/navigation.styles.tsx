@@ -41,7 +41,7 @@ export const StyledNavigation = styled.div<IStyledNavigation>`
   z-index: ${LAYERS.navigation};
   overflow: hidden;
 
-  @media ${media.tablet} {
+  @media ${media.tabletLandscape} {
     position: ${(p) => (p.sidebarStyle ? "sticky" : "fixed")};
     top: ${(p) => (p.sidebarStyle ? p.theme.spacingProps.headerHeight : "")};
     height: ${(p) =>
@@ -70,15 +70,42 @@ export const StyledNavigationHeader = styled.div`
   ${NavigationHeaderStyles}
 `;
 
+export const StyledNavigationContentWrapper = styled.div`
+  word-break: break-word;
+`;
+
 export const StyledNavigationLink = styled.div`
   ${NavigationTextStyle}
   padding: ${(p) =>
     `${p.theme.spacingProps.textSpacingY} ${p.theme.spacingProps.textSpacingX}`};
   word-break: break-word;
-  /* text-transform: uppercase; */
 
   & a {
     ${LinkStyles}
+  }
+`;
+
+export const StyledNavGithubLink = styled.a`
+  ${LinkStyles}
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+`;
+
+export const StyledNavGithub = styled.div`
+  ${LinkStyles}
+  position: relative;
+  height: 2rem;
+  width: 2rem;
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  justify-self: start;
+
+  svg {
+    transform: translate3d(0, 0, 0);
   }
 `;
 
@@ -92,7 +119,7 @@ export const StyledNavigationContent = styled.div<IStyledNavigation>`
   overflow-y: scroll;
   overflow-x: hidden;
 
-  @media ${media.tablet} {
+  @media ${media.tabletLandscape} {
     display: ${(p) => (p.sidebarStyle ? "grid" : "")};
     position: ${(p) => (p.sidebarStyle ? "relative" : "absolute")};
     ${(p) => p.sidebarStyle && ScrollbarStyles};
@@ -106,7 +133,7 @@ export const StyledNavigationContent = styled.div<IStyledNavigation>`
   & ${StyledDrawerContentWrapper}, & ${StyledDrawerContent} {
     pointer-events: ${(p) => (p.open ? "" : "none")};
 
-    @media ${media.tablet} {
+    @media ${media.tabletLandscape} {
       pointer-events: ${(p) => (p.open || p.sidebarStyle ? "auto" : "none")};
     }
   }
@@ -121,9 +148,14 @@ export const StyledNavigationContent = styled.div<IStyledNavigation>`
 `;
 
 export const StyledNavigationFooter = styled.div<IStyledNavigation>`
+  display: grid;
   width: 100%;
+  grid-template-columns: 0 1fr 1fr 0;
+  grid-template-rows: repeat(3, min-content);
+  grid-column-gap: ${(p) => p.theme.spacingProps.defaultSpacing};
+  grid-row-gap: calc(${(p) => p.theme.spacingProps.textSpacingX});
 
-  @media ${media.tablet} {
+  @media ${media.tabletLandscape} {
     ${(p) => p.sidebarStyle && InterfaceBackgroundStyles};
     position: ${(p) => (p.sidebarStyle ? "sticky" : "")};
     bottom: 0px;
@@ -134,7 +166,19 @@ export const StyledNavigationFooter = styled.div<IStyledNavigation>`
   }
 
   & ${StyledInvertThemeButton} {
-    padding: ${(p) =>
-      `calc(${p.theme.spacingProps.defaultSpacing}) calc(${p.theme.spacingProps.defaultSpacing})`};
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: end;
+    align-self: center;
+
+    svg {
+      max-height: none;
+      max-width: none;
+      height: 100%;
+      width: 100%;
+    }
   }
 `;
