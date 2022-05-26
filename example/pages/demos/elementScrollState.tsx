@@ -4,6 +4,7 @@ import { StyledPage } from "../../global/page.styles";
 import { Header2 } from "../../global/typography";
 import ParagraphComponent from "../../components/content/paragraph";
 import ElementScroll from "../../components/scroll/elementScroll";
+import { ScrollContextProvider } from "@speaker-ender/react-scrollr";
 
 const ElementScrollState: NextPage = () => {
   return (
@@ -12,7 +13,9 @@ const ElementScrollState: NextPage = () => {
       <StyledPanel>
         <ParagraphComponent text="Here you can see how the scroll state can be applied to an element instead of the viewport" />
       </StyledPanel>
-      <ElementScroll />
+      <ScrollContextProvider>
+        <ElementScroll />
+      </ScrollContextProvider>
     </StyledPage>
   );
 };

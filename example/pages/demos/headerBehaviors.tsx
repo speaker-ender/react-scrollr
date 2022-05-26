@@ -4,6 +4,7 @@ import { StyledPage } from "../../global/page.styles";
 import { Header2, Header3 } from "../../global/typography";
 import ParagraphComponent from "../../components/content/paragraph";
 import CustomHeader from "../../components/scroll/headers/customHeader";
+import { ScrollContextProvider } from "@speaker-ender/react-scrollr";
 
 const HeaderBehaviors: NextPage = () => {
   const parallaxHeaderCallback = (
@@ -42,12 +43,17 @@ const HeaderBehaviors: NextPage = () => {
         <ParagraphComponent text="Here are some examples of popular scroll behaviors" />
       </StyledPanel>
       <Header3>Parallax</Header3>
-      <CustomHeader updateHeaderCallback={parallaxHeaderCallback} />
+      <ScrollContextProvider>
+        <CustomHeader updateHeaderCallback={parallaxHeaderCallback} />
+      </ScrollContextProvider>
+
       <Header3>Show/Hide</Header3>
-      <CustomHeader
-        hasTransition={true}
-        updateHeaderCallback={showHideHeaderCallback}
-      />
+      <ScrollContextProvider>
+        <CustomHeader
+          hasTransition={true}
+          updateHeaderCallback={showHideHeaderCallback}
+        />
+      </ScrollContextProvider>
     </StyledPage>
   );
 };
