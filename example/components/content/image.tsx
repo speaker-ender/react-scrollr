@@ -10,7 +10,7 @@ export interface IImageComponent {
 
 const ImageComponent: React.FC<IImageComponent> = (props) => {
   return props.transitionInView ? (
-    <InViewComponent>
+    <InViewComponent transitionStyle="fade-in">
       <StyledImage>
         <Image src={enderImage} layout="responsive" alt=""></Image>
       </StyledImage>

@@ -43,6 +43,9 @@ export const useInViewTransition = (
                   inViewElementRef.current.style.opacity = '1'
                   inViewElementRef.current.style.transform = 'translate3d(0, 0px, 0)'
                   break
+                default:
+                  inViewElementRef.current.style.opacity = '1'
+                  break
               }
             } 
           } else {
@@ -60,6 +63,9 @@ export const useInViewTransition = (
                   inViewElementRef.current.style.opacity = '0'
                   inViewElementRef.current.style.transform = 'translate3d(0, 20px, 0)'
                   break
+                  default:
+                    inViewElementRef.current.style.opacity = '0'
+                    break
               }
             }
           }
