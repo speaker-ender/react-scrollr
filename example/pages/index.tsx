@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { StyledPanel } from "../global/panel.styles";
 import { StyledPage } from "../global/page.styles";
-import { Header2 } from "../global/typography";
+import { Header2, Header3 } from "../global/typography";
 import ParagraphComponent from "../components/content/paragraph";
 import {
   InViewComponent,
@@ -10,7 +10,7 @@ import {
 } from "@speaker-ender/react-scrollr";
 import CustomHeader from "../components/scroll/headers/customHeader";
 import ElementScroll from "../components/scroll/elementScroll";
-import ElementInView from "./demos/elementInView";
+import ElementInView from "../components/inView/elementInView";
 
 const Home: NextPage = () => {
   const parallaxHeaderCallback = (
@@ -34,18 +34,36 @@ const Home: NextPage = () => {
         </InViewComponent>
         <InViewComponent>
           <StyledPanel>
-            <ParagraphComponent text="Managing lots of scroll events in your React Site can be difficult to maintain can serverly degrade performance" />
+            <ParagraphComponent text="This package contains all the tools you need to handle scroll events at scale." />
             <ParagraphComponent text="React Scrollr uses a callback pattern in conjunction with context hooks in order to keep your code clean while also avoiding re-rendering of your components" />
           </StyledPanel>
         </InViewComponent>
+        <InViewComponent>
+          <Header3>Usage Examples</Header3>
+        </InViewComponent>
+        <InViewComponent>
+          <StyledPanel>
+            <ParagraphComponent text="You can create animations whenever an element enders or leaves the viewport" />
+          </StyledPanel>
+        </InViewComponent>
+        <ElementInView />
+        <InViewComponent>
+          <StyledPanel>
+            <ParagraphComponent text="You can keep track of the current scroll position of the Window or any scrollable container" />
+          </StyledPanel>
+        </InViewComponent>
+        <ScrollContextProvider>
+          <ElementScroll />
+        </ScrollContextProvider>
+        <InViewComponent>
+          <StyledPanel>
+            <ParagraphComponent text="You can create animations based off of scroll events, such as headers" />
+          </StyledPanel>
+        </InViewComponent>
+        <ScrollContextProvider>
+          <CustomHeader updateHeaderCallback={parallaxHeaderCallback} />
+        </ScrollContextProvider>
       </ObserverContextProvider>
-      <ElementInView />
-      <ScrollContextProvider>
-        <ElementScroll />
-      </ScrollContextProvider>
-      <ScrollContextProvider>
-        <CustomHeader updateHeaderCallback={parallaxHeaderCallback} />
-      </ScrollContextProvider>
     </StyledPage>
   );
 };

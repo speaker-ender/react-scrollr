@@ -51,7 +51,13 @@ const Navigation: React.FC<INavigation> = (props) => {
           </StyledNavigationLink>
           <StyledNavigationHeader>Hooks</StyledNavigationHeader>
           <StyledNavigationLink>
-            <Link href={"/hooks/useScrollState"}>useScrollState</Link>
+            <Link href={"/hooks/useScrollContext"}>useScrollContext</Link>
+          </StyledNavigationLink>
+          <StyledNavigationLink>
+            <Link href={"/hooks/useInViewState"}>useObserverContext</Link>
+          </StyledNavigationLink>
+          <StyledNavigationLink>
+            <Link href={"/hooks/useInViewState"}>useInViewState</Link>
           </StyledNavigationLink>
           <Drawer title="Demos">
             <StyledNavigationLink>

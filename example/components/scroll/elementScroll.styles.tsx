@@ -12,6 +12,13 @@ export const StyledScrollContainer = styled(StyledContentItem)`
 
 export const StyledScrollBody = styled.div`
   height: 100vh;
+  padding-top: 25px;
+  text-align: center;
+  background: linear-gradient(
+    to bottom,
+    ${(p) => p.theme.themeProps.primaryLight},
+    ${(p) => p.theme.themeProps.secondaryDark}
+  );
 `;
 
 export const StyledScrollInfo = styled.div`

@@ -5,7 +5,11 @@ const useInViewStatePage: NextPage = () => {
   return (
     <FunctionLayout
       functionName="useInViewState"
-      description={[""]}
+      description={[
+        "This hook can be used to keep track of an elements in view state.",
+        "This hook is not meant for a large amount of components as it relies on state updates and not callbacks.",
+        "If you need to handle many components, register a callback through the useObserverContext hook.",
+      ]}
       parameters={[
         {
           name: "threshold",

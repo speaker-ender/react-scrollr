@@ -2,7 +2,7 @@
   "name": "@speaker-ender/react-scrollr",
   "author": "3nder",
   "description": "React tools for scroll animations",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
