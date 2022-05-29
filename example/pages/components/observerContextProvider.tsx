@@ -6,7 +6,7 @@ const ObserverContextProviderPage: NextPage = () => {
     <DescriptionLayout
       componentName="ObserverContextProvider"
       description={[
-        "This component is used for handling window observer states.",
+        "This component is used for providing context for the useObserverContext hook.",
       ]}
       parameters={[
         {

@@ -7,21 +7,9 @@ const ScrollContextProviderPage: NextPage = () => {
       componentName="ScrollContextProvider"
       description={[
         "This component is used for handling the scroll state of the window.",
-        "You can use the hook, useScrollContext to get the current scroll position from any child component of ScrollContextProvider.",
-        "The default sample rate is 10ms.",
+        "You can use the hook, useScrollContext to register scroll callbacks whenever the scroll state changes.",
       ]}
-      parameters={[
-        {
-          name: "listenerInterval",
-          type: "number",
-          optional: true,
-        },
-        {
-          name: "stateInterval",
-          type: "number",
-          optional: true,
-        },
-      ]}
+      parameters={[]}
     ></DescriptionLayout>
   );
 };
