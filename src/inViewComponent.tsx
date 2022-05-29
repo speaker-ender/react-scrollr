@@ -16,14 +16,15 @@ export const InViewComponent: React.FC<IInViewComponent> = (props) => {
   const [inViewRef] = useInViewTransition(
     props.threshold,
     props.untrackOnCallback,
-    props.callback
+    props.callback,
+    props.transitionStyle
   );
 
   return (
     <div
       style={{
-        transition: "opacity 350ms ease-in-out",
-        opacity: "0",
+        transition: "opacity 350ms ease-in-out, transform 350ms ease-in-out",
+        opacity: props.transitionStyle === "none" ? "1" : "0",
       }}
       ref={inViewRef}
     >

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useEffect, useRef } from "react";
 import { useClientHook, useEventCallback } from "@speaker-ender/react-ssr-tools";
 import { usePrevious } from "./helpers/hooks";
@@ -6,15 +6,14 @@ import { useObserverContext } from "./observer.context";
 
 export type InViewCallback = (
   isIntersecting: boolean,
-  threshold: number
+  threshold: number,
 ) => void;
-
-export type IInViewState = ReturnType<typeof useInViewTransition>;
 
 export const useInViewTransition = (
   threshold: number = 0.2,
   untrackOnCallback?: boolean,
-  callback?: InViewCallback
+  callback?: InViewCallback,
+  transitionStyle?: "fade-in" | "fade-up" | "fade-side" | "none"
 ): [refCallback: (element: HTMLElement | null) => void] => {
   const isClient = useClientHook();
   const { registerInViewElement, unregisterInViewElement } =
@@ -31,9 +30,38 @@ export const useInViewTransition = (
 
       if (newInView !== isInView.current) {
           if (newInView) {
-            if (inViewElementRef.current) inViewElementRef.current.style.opacity = '1'
+            if (inViewElementRef.current) {
+              switch (transitionStyle) {
+                case 'fade-in':
+                  inViewElementRef.current.style.opacity = '1'
+                  break
+                case 'fade-side':
+                  inViewElementRef.current.style.opacity = '1'
+                  inViewElementRef.current.style.transform = 'translate3d(0px, 0, 0)'
+                  break
+                case 'fade-up':
+                  inViewElementRef.current.style.opacity = '1'
+                  inViewElementRef.current.style.transform = 'translate3d(0, 0px, 0)'
+                  break
+              }
+            } 
           } else {
-            if (inViewElementRef.current) inViewElementRef.current.style.opacity = '0'
+            
+            if (inViewElementRef.current) {
+              switch (transitionStyle) {
+                case 'fade-in':
+                  inViewElementRef.current.style.opacity = '0'
+                  break
+                case 'fade-side':
+                  inViewElementRef.current.style.opacity = '0'
+                  inViewElementRef.current.style.transform = 'translate3d(-20px, 0, 0)'
+                  break
+                case 'fade-up':
+                  inViewElementRef.current.style.opacity = '0'
+                  inViewElementRef.current.style.transform = 'translate3d(0, 20px, 0)'
+                  break
+              }
+            }
           }
 
           isInView.current = newInView;

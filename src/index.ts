@@ -8,3 +8,4 @@ export {
 } from "./scroll.context";
 export { InViewComponent } from "./inViewComponent";
 export { useInViewState } from "./useInViewState";
+export { useInViewTransition } from "./useInViewTransition";
